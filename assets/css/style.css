@@ -1,0 +1,14 @@
+#mainContent {
+    padding-top: 56px;
+    display: flex;
+}
+
+#mainContent.leftPadding {
+    padding-left: 240px;
+}
+
+#mainContentContainer {
+    padding: 10px 30px;
+    display: flex;
+    flex: 1;
+}
