@@ -1,117 +1,36 @@
-<?php include('include/header.php'); ?>
+<?php
+require_once('include/header.php');
+?>
+<!-- <script type="text/javascript">
+    function truncateText(selector, maxLength) {
+        var element = document.querySelector(selector),
+            truncated = element.innerText;
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
+        if (truncated.length > maxLength) {
+            truncated = truncated.substr(0,maxLength) + '...';
+        }
+        return truncated;
+    }
+    $('h6').text() = truncateText('h6', 20);
+</script> -->
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
+<style media="screen">
+h6 {
+ width: 190px;
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
+</style>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="assets/images/img.png" alt="" class="card-img-top">
-                        <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
 
-        </div>
+    <div class="">
+        <?php
+        $videoGrid = new VideoGrid($con, $userLoggedInObj->getUsername());
+
+        echo $videoGrid->create(null, "Watch Amazing Videos", false);
+        ?>
+    </div>
+
 <?php include('include/footer.php'); ?>
