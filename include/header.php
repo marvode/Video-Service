@@ -1,6 +1,7 @@
 <?php
 require_once("include/config.php");
 require_once("include/classes/User.php");
+require_once("include/classes/ButtonProvider.php");
 require_once("include/classes/Video.php");
 require_once("include/classes/VideoGrid.php");
 require_once("include/classes/VideoGridItem.php");
@@ -36,8 +37,11 @@ $userLoggedInObj = new User($con, $usernameLoggedIn);
                         </div>
                     </form>
                     <ul class="nav navbar-nav">
-                        <li class="active nav-item"><a href="upload.php" class="nav-link">Upload</a></li>
-                        <li class="nav-item"><a href="sign_in.php" class="nav-link">Sign In</a></li>
+                        <li class="active nav-item"><?php echo ButtonProvider::createUserUploadButton() ?></li>
+                        <li class="nav-item"><?php echo ButtonProvider::createUserProfileNavigationButton($con, $usernameLoggedIn) ?></li>
+                        <li class="nav-item"><?php echo ButtonProvider::createLogOutButton() ?></li>
+
+                        <!-- <li class="nav-item"><a href="sign_in.php" class="nav-link">Sign In</a></li> -->
                     </ul>
                 </div>
             </div>
