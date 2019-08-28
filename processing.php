@@ -1,5 +1,6 @@
 <?php
 require_once("include/header.php");
+require_once("include/afterNav.php");
 require_once("include/classes/VideoUploadData.php");
 require_once("include/classes/VideoProcessor.php");
 

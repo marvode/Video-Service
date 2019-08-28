@@ -1,5 +1,6 @@
 <?php
 require_once("include/header.php");
+require_once("include/afterNav.php");
 require_once("include/classes/Account.php");
 require_once("include/classes/Constants.php");
 require_once("include/classes/FormSanitizer.php");
@@ -28,7 +29,7 @@ function getInputValue($name) {
 <div class="row">
     <div class="offset-md-2 offset-lg-3 mt-5"></div>
     <div class=" col-lg-6 col-md-8">
-        <div class="card">
+        <div class="card bg-dark">
             <div class="card-header">
                 <h2>Sign In</h2>
             </div>
@@ -44,7 +45,7 @@ function getInputValue($name) {
                 </form>
             </div>
             <div class="card-footer">
-                <a href="sign_up.php">Need an account? Sign up here!</a>
+                <a href="sign_up.php" class='text-light'>Need an account? Sign up here!</a>
             </div>
         </div>
     </div>

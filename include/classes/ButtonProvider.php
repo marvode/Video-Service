@@ -19,7 +19,7 @@ class ButtonProvider {
     public static function createHyperlinkButton($text, $imageSrc, $href, $class) {
         $image = ($imageSrc == null) ? "" : "<img src='$imageSrc'>";
 
-        return "<a href='$href' class='$class'>
+        return "<a href='$href' class='$class' style:'padding-right: 1em; padding-left: 1em'>
                     $image
                     <span>$text</span>
                 </a>";
@@ -30,9 +30,16 @@ class ButtonProvider {
         $profilePic = $userObj->getProfilePic();
         $link = "profile.php?username=$username";
 
-        return "<a href='$link' class='nav-link'>
-                    <img src='$profilePic' height='26px'>
+        return "<a href='$link' class='nav-link ' style='padding-right: 1em; padding-left: 1em'>
+                    <img src='$profilePic' height='30px'>
                 </a>";
+    }
+
+    public static function createUserProfilePic($con, $username) {
+        $userObj = new User($con, $username);
+        $profilePic = $userObj->getProfilePic();
+
+        return "<img src='$profilePic' height='26px'>";
     }
 
     public static function createUserProfileNavigationButton($con, $username) {
@@ -40,7 +47,7 @@ class ButtonProvider {
             return ButtonProvider::createUserProfileButton($con, $username);
         }
         else {
-            return "<a href='sign_in.php' class='nav-link'>
+            return "<a href='sign_in.php' class='nav-link ' style='padding-right: 1em; padding-left: 1em'>
                         <span class=''>Sign In</span>
                     </a>";
         }
@@ -48,20 +55,39 @@ class ButtonProvider {
 
     public static function createUserUploadButton() {
         if(User::isLoggedIn()) {
-            return ButtonProvider::createHyperlinkButton("", "assets/images/icons/upload.png", "upload.php", "nav-link");
+            return ButtonProvider::createHyperlinkButton("Upload", "", "upload.php", "nav-link ");
         }
         else {
-            return ButtonProvider::createHyperlinkButton("", "assets/images/icons/upload.png", "sign_in.php", "nav-link");
+            return ButtonProvider::createHyperlinkButton("Upload", "", "sign_in.php", "nav-link ");
         }
     }
 
     public static function createLogOutButton() {
         if(User::isLoggedIn()) {
-            return ButtonProvider::createHyperlinkButton("Sign out", "", "logout.php", "nav-link");
+            return ButtonProvider::createHyperlinkButton("Sign out", "", "logout.php", "nav-link ");
         }
         else {
-            return ButtonProvider::createHyperlinkButton("Sign Up", "", "sign_up.php", "nav-link");
+            return ButtonProvider::createHyperlinkButton("Sign Up", "", "sign_up.php", "nav-link ");
         }
+    }
+
+    public static function createSubscriberButton($con, $userToObj, $userLoggedInObj) {
+        $userTo = $userToObj->getUsername();
+        $userLoggedIn = $userLoggedInObj->getUsername();
+
+        $isSubscribedTo = $userLoggedInObj->isSubscribedTo($userTo);
+        $buttonText = $isSubscribedTo ? "SUBSCRIBED" : "SUBSCRIBE";
+        $buttonText .= " " . $userToObj->getSubscriberCount();
+
+        $buttonClass = $isSubscribedTo ? "btn-secondary" : "btn-danger";
+        $action = "subscribe(\"$userTo\", \"$userLoggedIn\", this)";
+
+        $button = ButtonProvider::createButton($buttonText, null, $action, "btn " . $buttonClass);
+
+        return "<div class='d-flex justify-content-end'>
+                    $button
+                </div>";
+
     }
 
 }

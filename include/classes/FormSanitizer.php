@@ -15,6 +15,13 @@ class FormSanitizer {
         return $inputText;
     }
 
+    public static function sanitizeFormAmount($inputText) {
+        $inputText = strip_tags($inputText);
+        $inputText = str_replace(" ", "", $inputText);
+        $inputText = (int)$inputText;
+        return $inputText;
+    }
+
     public static function sanitizeFormPassword($inputText) {
         $inputText = strip_tags($inputText);
         return $inputText;

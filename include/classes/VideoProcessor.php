@@ -119,7 +119,7 @@ class VideoProcessor {
     }
 
     public function generateThumbnails($filePath) {
-        $thumbnailSize = "210x118";
+        $thumbnailSize = "630x354";
         $numThumbnails = 1;
         $pathToThumbnail = "uploads/videos/thumbnails";
 

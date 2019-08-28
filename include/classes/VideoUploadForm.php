@@ -12,11 +12,13 @@ class VideoUploadForm {
         $descriptionInput = $this->createDescriptionInput(null);
         $categoriesInput = $this->createCategoriesInput(null);
         $uploadButton = $this->createUploadButton();
+        $amountInput = $this->createAmountInput();
         return "<form action='processing.php' method='POST' enctype='multipart/form-data'>
                     $fileInput
                     $titleInput
                     $descriptionInput
                     $categoriesInput
+                    $amountInput
                     $uploadButton
                 </form>";
     }
@@ -24,7 +26,7 @@ class VideoUploadForm {
     private function createFileInput() {
 
         return "<div class='form-group'>
-                    <label for='FormControlFile'>Your file</label>
+                    <label for='FormControlFile'><em>Only mp4 files less than 3 GB</em></label>
                     <input type='file' class='form-control-file' id='FormControlFile' name='fileInput' required>
                 </div>";
     }
@@ -76,6 +78,13 @@ class VideoUploadForm {
         if($value == null) $value = "";
         return "<div class='form-group'>
                     <textarea class='form-control' placeholder='Description' name='descriptionInput' rows='5'>$value</textarea>
+                </div>";
+    }
+
+    private function createAmountInput() {
+        return "<div class='form-group'>
+                    <em>leave the field blank for free video</em>
+                    <input class='form-control' placeholder='Cost of Video in Naira (eg. 50)' type='text' name='amountInput'>
                 </div>";
     }
 

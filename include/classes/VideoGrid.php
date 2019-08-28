@@ -24,17 +24,77 @@ class VideoGrid {
 
         //returns the main container in the homepage
         return "<h5>$header</h5>
-                <div class='col-lg-9'>
-                    <div class='container'>
+                <div class='col-lg-12'>
+                    <div class='container-fluid'>
                         <div class='$this->gridClass'>
                             $gridItems
                         </div>
                     </div>
                 </div>
-                <div class='col-lg-3 d-md-none'>
-                    <div class='border border-dark'></div>
-                </div>
+
                 <hr>";
+    }
+
+    public function createSuggestions($videos, $title, $showFilter) {
+        if($videos == null) {
+            $gridItems = $this->generateSuggestionsItems();
+        }
+        else {
+            $gridItems = $this->generateItemsFromVideos($videos);
+        }
+        $header = "";
+
+        if($title != null) {
+            $header = $this->createGridHeader($title, $showFilter);
+        }
+
+        //returns the main container in the homepage
+        return "<h5>$header</h5>
+                <div class='col-lg-12'>
+                    <div class='container-fluid'>
+                        <div class=''>
+                            $gridItems
+                        </div>
+                    </div>
+                </div>
+
+                <hr>";
+    }
+
+    public function createAttraction($videos, $title, $showFilter) {
+        if($videos == null) {
+            $gridItems = $this->generateAttractionItem();
+        }
+        else {
+            $gridItems = $this->generateItemsFromVideos($videos);
+        }
+        $header = "";
+
+        if($title != null) {
+            $header = $this->createGridHeader($title, $showFilter);
+        }
+        return "<h5></h5>
+                <div class='pt-2 col-sm-12'>
+                    <div class='container-fluid'>
+                        <div>
+                        $gridItems
+                        </div>
+                    </div>
+                </div>";
+    }
+
+    public function generateAttractionItem() {
+        $query = $this->con->prepare("SELECT * FROM videos ORDER BY RAND() LIMIT 1");
+        $query->execute();
+
+        $elementsHtml = "";
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $video = new Video($this->con, $row, $this->userLoggedInObj);
+            $item = new VideoGridItem($video, $this->largeMode);
+            $elementsHtml .= $item->createAttractionItem($this->largeMode);
+        }
+
+        return $elementsHtml;
     }
 
     public function generateItems() {
@@ -45,7 +105,21 @@ class VideoGrid {
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $video = new Video($this->con, $row, $this->userLoggedInObj);
             $item = new VideoGridItem($video, $this->largeMode);
-            $elementsHtml .= $item->create();
+            $elementsHtml .= $item->create($this->largeMode);
+        }
+
+        return $elementsHtml;
+    }
+
+    public function generateSuggestionsItems() {
+        $query = $this->con->prepare("SELECT * FROM videos ORDER BY RAND() LIMIT 15");
+        $query->execute();
+
+        $elementsHtml = "";
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $video = new Video($this->con, $row, $this->userLoggedInObj);
+            $item = new VideoGridItem($video, $this->largeMode);
+            $elementsHtml .= $item->createSuggestions($this->largeMode);
         }
 
         return $elementsHtml;
@@ -87,7 +161,7 @@ class VideoGrid {
         }
 
         return "<div class=''>
-                    <div class='left'>
+                    <div class='text-light'>
                         $title
                     </div>
                     $filter

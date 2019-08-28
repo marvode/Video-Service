@@ -7,20 +7,56 @@ class VideoGridItem {
         $this->largeMode = $largeMode;
     }
 
-    public function create() {
+    public function create($largeMode) {
         $thumbnail = $this->createThumbnail();
-        $details = $this->createDetails();
+        $details = $this->createDetails($largeMode);
         $duration = $this->video->getDuration();
         $url = "watch.php?id=".$this->video->getId();
+        $amount = $this->video->getAmount();
 
-        return "<div class='col-lg-3 col-md-4 mt-3' style='min-width:210px;'>
-                <div class='card'>
-                    <a class='text-dark' href='$url'>
+        return "<div class='col-lg-3 mt-3'>
+                    <a class='text-light' href='$url' style='text-decoration:none;'>
                     <div class=''>$thumbnail</div>
-                    <span>$duration</span>
-                    <div class='p-1'>$details</div>
+                    <div class='p-1 mousehover'>$details</div>
                     </a>
-                </div>
+                    <p class='d-flex justify-content-end'><em>Watch for</em>: $amount Naira</p>
+                </div>";
+    }
+
+    public function createSuggestions($largeMode) {
+        $thumbnail = $this->createThumbnail();
+        $details = $this->createDetails($largeMode);
+        $duration = $this->video->getDuration();
+        $url = "watch.php?id=".$this->video->getId();
+        $amount = $this->video->getAmount();
+
+        return "<div class='col mt-3'>
+                    <a class='text-light' href='$url' style='text-decoration:none;'>
+                    <div class=''>$thumbnail</div>
+                    <div class='p-1 mousehover'>$details</div>
+                    </a>
+                    <p class='d-flex justify-content-end'><em>Watch for</em>: $amount Naira</p>
+                </div>";
+    }
+
+    public function createAttractionItem($largeMode) {
+        $thumbnail = $this->createThumbnail();
+        $title = $this->video->getTitle();
+        $details = $this->createDetails($largeMode);
+        $url = "watch.php?id=".$this->video->getId();
+        $amount = $this->video->getAmount();
+
+        return "<div class='row'>
+                    <a class='text-light col-md-8' href='$url' style='text-decoration:none; padding:0px;'>
+                    <div class='img-hover-zoom'>$thumbnail</div>
+                    </a>
+                    <div class='col-md-4 bg-dark text-light d-flex' style='padding:0px;text-align:center;'>
+                        <div class='my-auto mx-auto'>
+                            <h4 class='display-4 pb-5'>$title</h4>
+                            <a id='attractionBtn' class='btn btn-info btn-lg mb-2' href='$url'>WATCH NOW</a>
+                        </div>
+
+                    </div>
                 </div>";
     }
 
@@ -28,15 +64,25 @@ class VideoGridItem {
         $thumbnail = $this->video->getThumbnail();
 
 
-        return "<img class='card-img-top' src='$thumbnail'>";
+        return "<img class='col-sm-12' src='$thumbnail' width:'100%'>";
     }
 
-    private function createDetails() {
+    private function createDetails($homepage) {
         $title = $this->video->getTitle();
         $username = $this->video->getUploadedBy();
         $description = $this->createDescription();
         $views = $this->video->getViews();
         $timestamp = $this->video->getTimeStamp();
+
+        if($homepage == false) {
+            return "<div class='pr-1 pl-1'>
+                        <h6 class=''>$title</h6>
+                        <div class=''>
+                            <span class=''>$views views</span>
+                        </div>
+                    </div>";
+        }
+
 
         return "<div class='pr-1 pl-1'>
                     <h6 class=''>$title</h6>

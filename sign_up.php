@@ -1,5 +1,6 @@
 <?php
     require_once("include/header.php");
+    require_once("include/afterNav.php");
     require_once("include/config.php");
     require_once("include/classes/Account.php");
     require_once("include/classes/Constants.php");
@@ -36,7 +37,7 @@
 <div class="row">
     <div class="offset-md-2 offset-lg-3 mt-5"></div>
     <div class=" col-lg-6 col-md-8">
-        <div class="card">
+        <div class="card bg-dark">
             <div class="card-header">
                 <h2>Sign Up</h2>
             </div>
@@ -69,7 +70,7 @@
                 </form>
             </div>
             <div class="card-footer">
-                <a href="sign_in.php">Already have an account? Sign in here!</a>
+                <a href="sign_in.php" class="text-light">Already have an account? Sign in here!</a>
             </div>
         </div>
     </div>

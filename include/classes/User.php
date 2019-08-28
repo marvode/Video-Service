@@ -1,6 +1,7 @@
 <?php
 class User {
     private $con, $sqlData;
+    private static $percentage = 0.7;
 
     public function __construct($con, $username) {
         $this->con = $con;
@@ -19,6 +20,10 @@ class User {
 
     public function getUsername() {
         return $this->sqlData["user_name"];
+    }
+
+    public function getUserId() {
+        return (int)$this->sqlData["id"];
     }
 
     public function getName() {
@@ -41,9 +46,47 @@ class User {
         return $this->sqlData["profilePic"];
     }
 
+    public function getBalance() {
+        return (int)$this->sqlData["balance"];
+    }
+
     public function getSignUpDate() {
         return $this->sqlData["signUpDate"];
     }
+
+    public function isSubscribedTo($userTo) {
+        $query = $this->con->prepare("SELECT * FROM subscribers WHERE userTo=:userTo AND userFrom=:userFrom");
+        $query->bindParam(":userTo", $userTo);
+        $query->bindParam(":userFrom", $username);
+
+        $username = $this->getUsername();
+        $query->execute();
+        return $query->rowCount() > 0;
+    }
+
+    public function getSubscriberCount() {
+        $query = $this->con->prepare("SELECT * FROM subscribers WHERE userTo=:userTo");
+        $query->bindParam(":userTo", $username);
+        $username = $this->getUsername();
+        $query->execute();
+        return $query->rowCount();
+    }
+
+    public function getSubscriptions() {
+        $query = $this->con->prepare("SELECT userTo FROM subscribers WHERE userFrom=:userFrom");
+        $username = $this->getUsername();
+        $query->bindParam(":userFrom", $username);
+        $query->execute();
+
+        $subs = array();
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $user = new User($this->con, $row["userTo"]);
+            array_push($subs, $user);
+        }
+        return $subs;
+    }
+
 }
 
 ?>
