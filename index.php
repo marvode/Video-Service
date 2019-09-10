@@ -63,6 +63,7 @@ h6 {
   padding: 16px 32px;
 }
 .mousehover:hover {
+
     color: #14decd;
 }
 
@@ -80,29 +81,58 @@ h6 {
 .img-hover-zoom:hover img {
   transform: scale(1.15);
 }
+
+.languageHover {
+    transition: transform 1s ease;
+}
+
+.languageHover:hover h5 {
+    color: #f95;
+    transform: scale(1.2);
+}
 </style>
 
+<script type="text/javascript">
 
-    <div class="">
+
+</script>
+
+
+    <div class="container-fluid">
         <?php
         $attraction = new VideoGrid($con, $userLoggedInObj->getUsername());
         $videoGrid = new VideoGrid($con, $userLoggedInObj->getUsername());
         $videoGrid2 = new VideoGrid($con, $userLoggedInObj->getUsername());
-        $videoGrid3 = new VideoGrid($con, $userLoggedInObj->getUsername());
-        $videoGrid4 = new VideoGrid($con, $userLoggedInObj->getUsername());
-        echo $attraction->createAttraction(null, "Latest", false);
-        echo "<br>";
+        ?>
+
+
+
+        <div class="container-fluid">
+            <div class="row">
+                <h3 class='text-light'>View by categories</h4>
+            </div>
+            <div class="row mt-3">
+                <?php
+                echo "<div class='col-lg-2 pr-3'>";
+                echo $videoGrid->contentCategory();
+                echo "</div>
+                      <div class='col-lg-10' style='padding:0px;'>";
+                echo $attraction->createAttraction(null, "Latest", false);
+                echo "</div>"
+                ?>
+            </div>
+        </div>
+        <?php
         require_once("include/afterNav.php");
-        echo $videoGrid->create(null, "Watch Amazing Videos", false);
+        echo $videoGrid->create(null, "Watch Amazing Videos", false, 0, "");
         echo "<br>";
-        echo $videoGrid2->create(null, "Latest Release", false);
-        echo "<br>";
-        echo $videoGrid3->create(null, "Hot Right Now", false);
-        echo "<br>";
-        echo $videoGrid4->create(null, "Must Watch", false);
+        echo $videoGrid2->createLatest(null, "Latest Release", false, 0);
         echo "<br>";
         ?>
+
+
     </div>
+
 
     <script type="text/javascript">
 

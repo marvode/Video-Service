@@ -42,7 +42,7 @@ class Account {
         }
     }
 
-    public function updateDetails($first_name, $last_name, $user_name, $email, $pass_word) {
+    public function updateDetails($first_name, $last_name, $user_name, $email) {
         $this->validateFirstName($first_name);
         $this->validateLastName($last_name);
         $this->validateNewEmail($email, $user_name);

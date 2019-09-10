@@ -1,4 +1,5 @@
 <?php
+require_once("include/config.php");
 class ButtonProvider {
     public static $signInFunction = "notSignedIn()";
 
@@ -62,6 +63,24 @@ class ButtonProvider {
         }
     }
 
+    public static function createRechargeButton($text) {
+        if(User::isLoggedIn()) {
+            return ButtonProvider::createHyperlinkButton("$text", "", "recharge.php", "nav-link ");
+        }
+        else {
+            return "";
+        }
+    }
+
+    public static function createSubscriptionsButton() {
+        if(User::isLoggedIn()) {
+            return ButtonProvider::createHyperlinkButton("Subscriptions", "", "subscriptions.php", "nav-link ");
+        }
+        else {
+            return "";
+        }
+    }
+
     public static function createLogOutButton() {
         if(User::isLoggedIn()) {
             return ButtonProvider::createHyperlinkButton("Sign out", "", "logout.php", "nav-link ");
@@ -71,7 +90,7 @@ class ButtonProvider {
         }
     }
 
-    public static function createSubscriberButton($con, $userToObj, $userLoggedInObj) {
+    public static function createSubscriberButton($con, $userToObj, $userLoggedInObj, $videoId) {
         $userTo = $userToObj->getUsername();
         $userLoggedIn = $userLoggedInObj->getUsername();
 
@@ -80,14 +99,44 @@ class ButtonProvider {
         $buttonText .= " " . $userToObj->getSubscriberCount();
 
         $buttonClass = $isSubscribedTo ? "btn-secondary" : "btn-danger";
-        $action = "subscribe(\"$userTo\", \"$userLoggedIn\", this)";
 
-        $button = ButtonProvider::createButton($buttonText, null, $action, "btn " . $buttonClass);
+        $button = ButtonProvider::createHyperlinkButton($buttonText, null, "subscribe.php?videoId=$videoId", "btn " . $buttonClass);
 
         return "<div class='d-flex justify-content-end'>
                     $button
                 </div>";
 
+    }
+
+    // public static function createSubscriberButton($con, $userToObj, $userLoggedInObj, $videoId) {
+    //     $userTo = $userToObj->getUsername();
+    //     $userLoggedIn = $userLoggedInObj->getUsername();
+    //
+    //     $isSubscribedTo = $userLoggedInObj->isSubscribedTo($userTo);
+    //     $buttonText = $isSubscribedTo ? "SUBSCRIBED" : "SUBSCRIBE";
+    //     $buttonText .= " " . $userToObj->getSubscriberCount();
+    //
+    //     $buttonClass = $isSubscribedTo ? "btn-secondary" : "btn-danger";
+    //     $action = "subscribe(\"$userTo\", \"$userLoggedIn\", \"$videoId\", this)";
+    //
+    //     $button = ButtonProvider::createButton($buttonText, null, $action, "btn " . $buttonClass);
+    //
+    //     return "<div class='d-flex justify-content-end'>
+    //                 $button
+    //             </div>";
+    //
+    // }
+
+    public static function navDropdown() {
+        return "<div class='dropdown'>
+                    <?php echo ButtonProvider::createUserProfileNavigationButton($con, $usernameLoggedIn)?>
+                    <button class='btn btn-dark dropdown-toggle' type='button' id='dropdownMenu2' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></button>
+                    <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
+                        <button class='dropdown-item' type='button'>Action</button>
+                        <button class='dropdown-item' type='button'>Another action</button>
+                        <button class='dropdown-item' type='button'>Something else here</button>
+                    </div>
+                </div>";
     }
 
 }

@@ -1,6 +1,5 @@
 <?php
 class SubscriptionsProvider {
-
     private $con, $userLoggedInObj;
 
     public function __construct($con, $userLoggedInObj) {
@@ -15,24 +14,25 @@ class SubscriptionsProvider {
             $condition = "";
             $i = 0;
 
-            while($i < sizeof ($subscriptions)) {
+            while($i < sizeof($subscriptions)) {
 
                 if($i == 0) {
-                    $conditon .= "WHERE uploadedBy=?";
+                    $condition .= "WHERE uploadedBy=?";
                 }
                 else {
-                    $condition .= "OR uploadedBy=?";
+                    $condition .= " OR uploadedBy=?";
                 }
-                $i++
+                $i++;
             }
 
-            $videoSql = "SELECT * FROM videos $condition ORDER BY uploadDate DESC";
+            $videoSql = "SELECT * FROM videos $condition AND contentType=1 ORDER BY uploadDate DESC";
             $videoQuery = $this->con->prepare($videoSql);
+
             $i = 1;
 
-            foreach ($subscriptions as $sub) {
+            foreach($subscriptions as $sub) {
                 $subUsername = $sub->getUsername();
-                $videoQuery->bindParam($i, $subUsername);
+                $videoQuery->bindValue($i, $subUsername);
                 $i++;
             }
 
@@ -41,10 +41,9 @@ class SubscriptionsProvider {
                 $video = new Video($this->con, $row, $this->userLoggedInObj);
                 array_push($videos, $video);
             }
-
         }
 
         return $videos;
     }
 }
-?>
+ ?>

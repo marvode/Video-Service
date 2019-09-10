@@ -15,7 +15,9 @@ $videoUploadData = new VideoUploadData(
                             $_POST["titleInput"],
                             $_POST["descriptionInput"],
                             $_POST["categoryInput"],
-                            $userLoggedInObj->getUsername()
+                            $userLoggedInObj->getUsername(),
+                            $_POST["languageInput"],
+                            $_POST["contentInput"]
                         );
 
 // Process video data (upload)

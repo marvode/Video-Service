@@ -1,7 +1,6 @@
 <?php
 class User {
     private $con, $sqlData;
-    private static $percentage = 0.7;
 
     public function __construct($con, $username) {
         $this->con = $con;
@@ -38,7 +37,7 @@ class User {
         return $this->sqlData["last_name"];
     }
 
-    public function getEmailName() {
+    public function getEmail() {
         return $this->sqlData["email"];
     }
 
@@ -48,6 +47,10 @@ class User {
 
     public function getBalance() {
         return (int)$this->sqlData["balance"];
+    }
+
+    public function getSubscriptionCost() {
+        return (int)$this->sqlData["subscriptionCost"];
     }
 
     public function getSignUpDate() {
