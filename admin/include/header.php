@@ -2,9 +2,7 @@
 require_once("include/config.php");
 require_once("include/classes/User.php");
 require_once("include/classes/ButtonProvider.php");
-require_once("include/classes/Video.php");
-require_once("include/classes/VideoGrid.php");
-require_once("include/classes/VideoGridItem.php");
+require_once("include/classes/Transactions.php");
 
 $usernameLoggedIn = isset($_SESSION["userLoggedIn"]) ? $_SESSION["userLoggedIn"] : "";
 

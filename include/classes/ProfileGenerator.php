@@ -39,26 +39,32 @@ class ProfileGenerator {
         $editDetails = $this->createEditDetailsButton();
         $rechargebutton = $this->createRechargeButton();
         $requestWithdrawal = $this->requestWithdrawal();
+        $requestWithdrawal2 = $this->requestWithdrawal2();
 
-        return "<div class='row justify-content-center'>
-                    <div class=''>
-                        <img class='' src='$profileImage'>
-                        <div class=''>
-                            <h4 class=''>$name</h4>
-                            $subCount subscribers
+        return "<div class='row'>
+                    <div class='offset-lg-4 col-lg-4'>
+                        <div class='d-flex justify-content-center'>
+                            <img class='img-fluid' src='$profileImage' style='max-height: 300px'>
+                            <div class=''>
+                                <h4 class=''>$name</h4>
+                                $subCount subscribers
+                            </div>
                         </div>
                     </div>
+                    <div class='col-lg-4 '>
+                        $requestWithdrawal
+                    </div>
+                </div>
                 </div>
                 <div class=''>
                     $button
-                    <div class=''>
-                        <div class='btn-group d-flex justify-content-end'>
+                    <div class='d-flex justify-content-end'>
+                        <div class='row'><div class='btn-group '>
                             $rechargebutton
                             $editDetails
-                            $requestWithdrawal
-                        </div>
-                    </div>
-                </div>";
+                            $requestWithdrawal2
+                        </div></div>
+                    </div>";
     }
 
     public function createTabsSection() {
@@ -109,7 +115,24 @@ class ProfileGenerator {
             return "";
         }
         else {
-            return ButtonProvider::createHyperlinkButton('Request Withdrawal', '', "request.php", 'btn btn-secondary');
+            return "<h4>Request Withdrawal</h4>
+                    <hr>
+                    <form method='POST' action='request.php'>
+                        <div class='form-group '><input type='text' class='form-control' name='amount' placeholder='Amount in USD (eg. 20)'></div>
+                        <div class='form-group '><input type='text' class='form-control' name='accountName' placeholder='Your Account Name'></div>
+                        <div class='form-group '><input type='text' class='form-control' name='accountNo' placeholder='Your Account Number'></div>
+                        <div class='form-group '><input type='text' class='form-control' name='bankName' placeholder='Your Bank Name'></div>
+                        <div class='form-group d-flex justify-content-end'><button type='submit' name='submit' class='btn btn-secondary'>Submit</button></div>
+                    </form>";
+        }
+    }
+
+    private function requestWithdrawal2() {
+        if($this->userLoggedInObj->getUsername() != $this->profileData->getProfileUsername()) {
+            return "";
+        }
+        else {
+            return ButtonProvider::createHyperlinkButton('Withdraw History', '', "request.php", 'btn btn-secondary');
         }
     }
 

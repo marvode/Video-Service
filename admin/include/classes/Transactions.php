@@ -22,13 +22,13 @@ class Transaction {
     }
 
     private function getAdminBalance() {
-        $adminId = 1;
-        $query = $this->con->prepare("SELECT * FROM admin WHERE id=:id");
+        $adminId = 3;
+        $query = $this->con->prepare("SELECT * FROM users WHERE id=:id");
         $query->bindParam(":id", $adminId);
         $query->execute();
 
         $sqlData = $query->fetch(PDO::FETCH_ASSOC);
-        return (float)$sqlData["balance"];
+        return (int)$sqlData["balance"];
     }
 
     private function getUserToBalance() {
@@ -38,7 +38,7 @@ class Transaction {
         $query->execute();
 
         $sqlData = $query->fetch(PDO::FETCH_ASSOC);
-        return (float)$sqlData["balance"];
+        return (int)$sqlData["balance"];
     }
 
     private function creditUserTo($amount) {
@@ -61,18 +61,18 @@ class Transaction {
     private function creditAdmin($amount) {
 
         $adminProfit = (1 - $this->percentage) * $amount;
-        $admin = 1;
+        $admin = "admin";
         $balance = $this->getAdminBalance() + $adminProfit;
 
 
-        $query = $this->con->prepare("UPDATE admin SET balance=:balance WHERE id=:admin");
+        $query = $this->con->prepare("UPDATE users SET balance=:balance WHERE user_name=:username");
         $query->bindParam(":balance", $balance);
-        $query->bindParam(":admin", $admin);
+        $query->bindParam(":username", $admin);
 
         $query->execute();
 
         $userLoggedIn = $this->userLoggedIn;
-        $this->recordTransaction($adminProfit, $userLoggedIn, 'admin');
+        $this->recordTransaction($adminProfit, $userLoggedIn, $admin);
     }
 
     private function debitUser($amount) {
@@ -90,7 +90,7 @@ class Transaction {
         return false;
     }
 
-    private function recordTransaction($amount, $userFrom, $userTo) {
+    public function recordTransaction($amount, $userFrom, $userTo) {
         $query = $this->con->prepare("INSERT INTO transactions (userFrom, userTo, amount) VALUES (:userFrom, :userTo, :amount)");
         $query->bindParam(":userFrom", $userFrom);
         $query->bindParam(":userTo", $userTo);
@@ -99,13 +99,10 @@ class Transaction {
         $query->execute();
     }
 
-    public static function recordWithdrawal($con, $amount, $userId, $withdrawalStatus, $accountName, $accountNo, $bankName) {
-        $query = $con->prepare("INSERT INTO withdrawals (userId, amount, withdrawalStatus, accountName, accountNo, bankName) VALUES (:userId, :amount, :withdrawalStatus, :accountName, :accountNo, :bankName)");
+    public function recordWithdrawal($con, $amount, $userId, $withdrawalStatus) {
+        $query = $con->prepare("INSERT INTO withdrawals (userId, amount, withdrawalStatus) VALUES (:userId, :amount, :withdrawalStatus)");
         $query->bindParam(":userId", $userId);
         $query->bindParam(":amount", $amount);
-        $query->bindParam(":accountName", $accountName);
-        $query->bindParam(":accountNo", $accountNo);
-        $query->bindParam(":bankName", $bankName);
         $query->bindParam(":withdrawalStatus", $withdrawalStatus);
 
         $query->execute();

@@ -51,5 +51,23 @@ class ButtonProvider {
             return "";
         }
     }
+
+    public static function createApproveButton($con, $requestId) {
+        $isApproved = RequestView::isApproved($con, $requestId);
+        $buttonText = $isApproved ? "APPROVED" : "APPROVE";
+
+        $buttonClass = $isApproved ? "btn " : "btn btn-success";
+        $action = "approve(\"$requestId\", this)";
+
+        $button = ButtonProvider::createButton($buttonText, null, $action, $buttonClass);
+
+        return "<div class='subscribeButtonContainer'>
+                    $button
+                </div>";
+    }
+
+    public static function createRequestHistory() {
+        return ButtonProvider::createHyperlinkButton("Request History", "", "requestHistory.php", "btn btn-primary");
+    }
 }
 ?>

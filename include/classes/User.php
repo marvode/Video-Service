@@ -46,11 +46,11 @@ class User {
     }
 
     public function getBalance() {
-        return (int)$this->sqlData["balance"];
+        return (float)$this->sqlData["balance"];
     }
 
     public function getSubscriptionCost() {
-        return (int)$this->sqlData["subscriptionCost"];
+        return (float)$this->sqlData["subscriptionCost"];
     }
 
     public function getSignUpDate() {
