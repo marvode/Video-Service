@@ -109,5 +109,14 @@ class RequestView {
         
         return (int)$query->fetch(PDO::FETCH_ASSOC)["withdrawalStatus"];
     }
+
+    public static function isFeatured($con, $videoId) {
+        $query = $con->prepare("SELECT featureVideo FROM videos WHERE id=:videoId");
+        $query->bindParam(":videoId", $videoId);
+
+        $query->execute();
+        
+        return (int)$query->fetch(PDO::FETCH_ASSOC)["featureVideo"];
+    }
 }
 ?>

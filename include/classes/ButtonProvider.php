@@ -94,6 +94,12 @@ class ButtonProvider {
         $userTo = $userToObj->getUsername();
         $userLoggedIn = $userLoggedInObj->getUsername();
 
+        if($userTo == $userLoggedIn) {
+            $button = ButtonProvider::createDeleteButton($con, $videoId);
+            return "<div class='d-flex justify-content-end'>
+                        $button
+                    </div>";
+        }
         $isSubscribedTo = $userLoggedInObj->isSubscribedTo($userTo);
         $buttonText = $isSubscribedTo ? "SUBSCRIBED" : "SUBSCRIBE";
         $buttonText .= " " . $userToObj->getSubscriberCount();
@@ -108,36 +114,8 @@ class ButtonProvider {
 
     }
 
-    // public static function createSubscriberButton($con, $userToObj, $userLoggedInObj, $videoId) {
-    //     $userTo = $userToObj->getUsername();
-    //     $userLoggedIn = $userLoggedInObj->getUsername();
-    //
-    //     $isSubscribedTo = $userLoggedInObj->isSubscribedTo($userTo);
-    //     $buttonText = $isSubscribedTo ? "SUBSCRIBED" : "SUBSCRIBE";
-    //     $buttonText .= " " . $userToObj->getSubscriberCount();
-    //
-    //     $buttonClass = $isSubscribedTo ? "btn-secondary" : "btn-danger";
-    //     $action = "subscribe(\"$userTo\", \"$userLoggedIn\", \"$videoId\", this)";
-    //
-    //     $button = ButtonProvider::createButton($buttonText, null, $action, "btn " . $buttonClass);
-    //
-    //     return "<div class='d-flex justify-content-end'>
-    //                 $button
-    //             </div>";
-    //
-    // }
-
-    public static function navDropdown() {
-        return "<div class='dropdown'>
-                    <?php echo ButtonProvider::createUserProfileNavigationButton($con, $usernameLoggedIn)?>
-                    <button class='btn btn-dark dropdown-toggle' type='button' id='dropdownMenu2' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></button>
-                    <div class='dropdown-menu' aria-labelledby='dropdownMenu2'>
-                        <button class='dropdown-item' type='button'>Action</button>
-                        <button class='dropdown-item' type='button'>Another action</button>
-                        <button class='dropdown-item' type='button'>Something else here</button>
-                    </div>
-                </div>";
+    public static function createDeleteButton($con, $videoId) {
+        return ButtonProvider::createButton("Delete", null, "deleteFile(\"$videoId\", this)", "btn btn-danger");
     }
-
 }
 ?>

@@ -18,7 +18,7 @@ class VideoPlayer {
         $filePath = $this->video->getFilePath();
 
         return "<video class='col-sm-12' controls controlsList='nodownload' $autoPlay>
-                    <source src='$filePath' type='video/mp4'>
+                    <source src='../$filePath' type='video/mp4'>
                 </video>";
     }
 }

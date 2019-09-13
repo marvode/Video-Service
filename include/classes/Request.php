@@ -17,8 +17,10 @@ class Request {
     }
 
     public function getAllRequest() {
-        $query = $this->con->prepare("SELECT * FROM withdrawals ORDER BY id DESC");
-
+        $query = $this->con->prepare("SELECT * FROM withdrawals WHERE userId=:userId ORDER BY id DESC");
+        $query->bindParam(":userId", $userId);
+        $userId = $this->userLoggedInObj->getUserId();
+        
         $query->execute();
 
         $html = "<table class='table table-striped'>

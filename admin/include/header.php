@@ -3,6 +3,9 @@ require_once("include/config.php");
 require_once("include/classes/User.php");
 require_once("include/classes/ButtonProvider.php");
 require_once("include/classes/Transactions.php");
+require_once("include/classes/Video.php");
+require_once("include/classes/VideoGrid.php");
+require_once("include/classes/VideoGridItem.php");
 
 $usernameLoggedIn = isset($_SESSION["userLoggedIn"]) ? $_SESSION["userLoggedIn"] : "";
 
@@ -21,7 +24,6 @@ $userLoggedInObj = new User($con, $usernameLoggedIn);
         <script src="assets/js/popper.js" charset="utf-8"></script>
         <script src="assets/js/bootstrap.min.js" charset="utf-8"></script>
         <script src="assets/js/main.js"></script>
-        <script src="assets/js/userAction.js" charset="utf-8"></script>
         <style media="screen">
         @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
 

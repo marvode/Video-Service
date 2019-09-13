@@ -17,29 +17,14 @@ if(!isset($_GET["id"])) {
         $video = new Video($con, $videoId, $userLoggedInObj);
 
         if(!isset($_SESSION["userLoggedIn"])) {
-            $videoPlayer = new VideoPlayer($video, $userLoggedInObj);
-            echo $videoPlayer->create(true);
-            echo "<br>";
-            $video->incrementViews();
-            // $transaction = new Transaction($con, $video, $userLoggedInObj);
-            //
-            // $videoHistory = new VideoHistory($con, $video, $userLoggedInObj);
-            // $videoHistory->create();
-            // $videoPlayer = new VideoPlayer($video, $userLoggedInObj);
-            // echo $videoPlayer->create(true);
-            // echo "<br>";
-            // $video->incrementViews();
+            echo "";
         }
 
         else {
-            $videoHistory = new VideoHistory($con, $video, $userLoggedInObj);
-            $videoHistory->create();
+            
             $videoPlayer = new VideoPlayer($video, $userLoggedInObj);
             echo $videoPlayer->create(true);
             echo "<br>";
-            if($_SESSION["userLoggedIn"] != $video->getUploadedBy()) {
-                $video->incrementViews();
-            }
 
         //     else {
         //         echo "<div class='col-sm-12 bg-dark d-flex' style='height:30em; text-align:center;'>
@@ -57,12 +42,6 @@ if(!isset($_GET["id"])) {
         ?>
     </div>
 
-    <div class="col-lg-4">
-        <?php
-        $videoGrid = new VideoGrid($con, $userLoggedInObj);
-        echo $videoGrid->createSuggestions(null, "Suggested Videos", false);
-        ?>
-    </div>
 </div>
 
 <script src="assets/js/videoPlayerAction.js"></script>

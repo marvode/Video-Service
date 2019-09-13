@@ -142,7 +142,7 @@ class VideoGrid {
     }
 
     public function generateAttractionItem() {
-        $query = $this->con->prepare("SELECT * FROM videos ORDER BY RAND() LIMIT 1");
+        $query = $this->con->prepare("SELECT * FROM videos WHERE featureVideo=1 ORDER BY RAND() LIMIT 1");
         $query->execute();
 
         $elementsHtml = "";

@@ -28,6 +28,68 @@ class User {
     public function getBalance() {
         return (int)$this->sqlData["balance"];
     }
+
+
+    public function getName() {
+        return $this->sqlData["first_name"] . " " . $this->sqlData["last_name"];
+    }
+
+    public function getFirstName() {
+        return $this->sqlData["first_name"];
+    }
+
+    public function getLastName() {
+        return $this->sqlData["last_name"];
+    }
+
+    public function getEmail() {
+        return $this->sqlData["email"];
+    }
+
+    public function getProfilePic() {
+        return $this->sqlData["profilePic"];
+    }
+
+    public function getSubscriptionCost() {
+        return (float)$this->sqlData["subscriptionCost"];
+    }
+
+    public function getSignUpDate() {
+        return $this->sqlData["signUpDate"];
+    }
+
+    public function isSubscribedTo($userTo) {
+        $query = $this->con->prepare("SELECT * FROM subscribers WHERE userTo=:userTo AND userFrom=:userFrom");
+        $query->bindParam(":userTo", $userTo);
+        $query->bindParam(":userFrom", $username);
+
+        $username = $this->getUsername();
+        $query->execute();
+        return $query->rowCount() > 0;
+    }
+
+    public function getSubscriberCount() {
+        $query = $this->con->prepare("SELECT * FROM subscribers WHERE userTo=:userTo");
+        $query->bindParam(":userTo", $username);
+        $username = $this->getUsername();
+        $query->execute();
+        return $query->rowCount();
+    }
+
+    public function getSubscriptions() {
+        $query = $this->con->prepare("SELECT userTo FROM subscribers WHERE userFrom=:userFrom");
+        $username = $this->getUsername();
+        $query->bindParam(":userFrom", $username);
+        $query->execute();
+
+        $subs = array();
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $user = new User($this->con, $row["userTo"]);
+            array_push($subs, $user);
+        }
+        return $subs;
+    }
 }
 
 ?>

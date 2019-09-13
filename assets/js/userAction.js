@@ -17,3 +17,13 @@ function subscribe(userTo, userFrom, button) {
         }
     });
 }
+
+function deleteFile(videoId, button) {
+    $.post("ajax/delete.php", { videoId: videoId })
+    .done(function() {
+        $(button).toggleClass("btn-danger");
+
+        var buttonText = $(button).hasClass("btn-danger") ? "DELETE" : "DELETED";
+        $(button).text(buttonText);
+    });
+}

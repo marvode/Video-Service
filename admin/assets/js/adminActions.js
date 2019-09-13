@@ -7,3 +7,24 @@ function approve(requestId, button) {
         $(button).text(buttonText);
     });
 }
+
+function deleteFile(videoId, button) {
+    $.post("ajax/delete.php", { videoId: videoId })
+    .done(function() {
+        $(button).toggleClass("btn-danger");
+
+        var buttonText = $(button).hasClass("btn-danger") ? "DELETE" : "DELETED";
+        $(button).text(buttonText);
+    });
+}
+
+function makeFeature(videoId, button) {
+    $.post("ajax/feature.php", { videoId: videoId })
+    .done(function(count) {
+        $(button).toggleClass("btn-info");
+
+        var buttonText = $(button).hasClass("btn-info") ? "Make Feature" : "FEATURED";
+        
+        $(button).text(buttonText + " " + count);
+    });
+}

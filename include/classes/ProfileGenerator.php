@@ -44,13 +44,13 @@ class ProfileGenerator {
         return "<div class='row'>
                     <div class='offset-lg-4 col-lg-4'>
                         <div class='d-flex justify-content-center'>
-                            <img class='img-fluid' src='$profileImage' style='max-height: 300px'>
-                            <div class=''>
-                                <h4 class=''>$name</h4>
-                                $subCount subscribers
-                            </div>
+                            <div class=''><img class='img-fluid ' src='$profileImage' style='max-height: 300px'></div>
                         </div>
                     </div>
+                    <!--<div class=' '>
+                        <h4 class=''>$name</h4>
+                        $subCount subscribers
+                    </div>-->
                     <div class='col-lg-4 '>
                         $requestWithdrawal
                     </div>

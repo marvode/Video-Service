@@ -26,6 +26,24 @@ class ButtonProvider {
                 </a>";
     }
 
+
+    public static function createUserProfileButton($con, $username) {
+        $userObj = new User($con, $username);
+        $profilePic = $userObj->getProfilePic();
+        $link = "profile.php?username=$username";
+
+        return "<a href='$link' class='nav-link ' style='padding-right: 1em; padding-left: 1em'>
+                    <img src='../$profilePic' height='30px'>
+                </a>";
+    }
+
+    public static function createUserProfilePic($con, $username) {
+        $userObj = new User($con, $username);
+        $profilePic = "../" . $userObj->getProfilePic();
+
+        return "<img src='$profilePic' height='26px'>";
+    }
+
     public static function createSetFeatureVideo() {
         return ButtonProvider::createHyperlinkButton("Set Feature Video", "", "feature.php", "nav-link ");
     }
@@ -64,6 +82,18 @@ class ButtonProvider {
         return "<div class='subscribeButtonContainer'>
                     $button
                 </div>";
+    }
+
+    public static function createDeleteButton($con, $videoId) {
+        return ButtonProvider::createButton("Delete", null, "deleteFile(\"$videoId\", this)", "btn btn-danger");
+    }
+
+    public static function createFeatureButton($con, $videoId) {
+        $isFeatured = RequestView::isFeatured($con, $videoId);
+        $buttonText = $isFeatured ? "FEATURED" : "Make Feature";
+
+        $buttonClass = $isFeatured ? "btn " : "btn btn-info";
+        return ButtonProvider::createButton($buttonText, null, "makeFeature(\"$videoId\", this)", $buttonClass);
     }
 
     public static function createRequestHistory() {

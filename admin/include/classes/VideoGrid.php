@@ -80,9 +80,9 @@ class VideoGrid {
                 <hr>";
     }
 
-    public function createSuggestions($videos, $title, $showFilter) {
+    public function createFeatureSelect($videos, $title, $showFilter) {
         if($videos == null) {
-            $gridItems = $this->generateSuggestionsItems();
+            $gridItems = $this->generateFeatureSelect();
         }
         else {
             $gridItems = $this->generateItemsFromVideos($videos);
@@ -96,11 +96,11 @@ class VideoGrid {
         //returns the main container in the homepage
         return "<h5>$header</h5>
                 <div class='col-lg-12'>
-                    <div class='container-fluid'>
-                        <div class=''>
+                    
+                        <div class='row'>
                             $gridItems
                         </div>
-                    </div>
+                    
                 </div>
 
                 <hr>";
@@ -217,15 +217,15 @@ class VideoGrid {
         return $elementsHtml;
     }
 
-    public function generateSuggestionsItems() {
-        $query = $this->con->prepare("SELECT * FROM videos ORDER BY RAND() LIMIT 15");
+    public function generateFeatureSelect() {
+        $query = $this->con->prepare("SELECT * FROM videos ORDER BY id DESC");
         $query->execute();
 
         $elementsHtml = "";
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $video = new Video($this->con, $row, $this->userLoggedInObj);
-            $item = new VideoGridItem($video, $this->largeMode);
-            $elementsHtml .= $item->createSuggestions($this->largeMode);
+            $item = new VideoGridItem($video, $this->largeMode, $this->con);
+            $elementsHtml .= $item->createFeatureSelect($this->largeMode);
         }
 
         return $elementsHtml;

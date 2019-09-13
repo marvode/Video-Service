@@ -18,17 +18,14 @@ class VideoInfoSection {
         $title = $this->video->getTitle();
         $views = $this->video->getViews();
 
-        $videoInfoControls = new VideoInfoControls($this->video, $this->userLoggedInObj);
-        $controls = $videoInfoControls->create();
+        // $videoInfoControls = new VideoInfoControls($this->video, $this->userLoggedInObj);
+        // $controls = $videoInfoControls->create();
 
         return "<div class=''>
                     <br>
                     <h5>$title</h5>
                     <span class=''>$views views</span>
-                    <br><hr>
-                    <div class=''>
-                        $controls
-                    </div>
+                    <hr>
                 </div>";
     }
 
@@ -44,19 +41,16 @@ class VideoInfoSection {
         else {
             $userToObject = new User($this->con, $uploadedBy);
             $videoId = $this->video->getId();
-            $actionButton = ButtonProvider::createSubscriberButton($this->con, $userToObject, $this->userLoggedInObj, $videoId);
+            
         }
 
         return "<div class=''>
                     <div class='text-light'>
-                        $profileButton
-                        <a class='text-light' style='text-decoration: none;' href='profile.php?username=$uploadedBy'>
-                            $uploadedBy
-                        </a>
+                        $uploadedBy
                         <div class=''>
                             <span class=''>Uploaded $uploadDate</span>
                         </div>
-                        $actionButton
+                       
                     </div>
                     <hr>
                     <div class=''>

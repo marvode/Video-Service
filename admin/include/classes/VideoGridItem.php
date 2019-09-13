@@ -1,11 +1,12 @@
 <?php
 class VideoGridItem {
-    private $video, $largeMode;
+    private $video, $largeMode, $con;
 
 
-    public function __construct($video, $largeMode) {
+    public function __construct($video, $largeMode, $con) {
         $this->video = $video;
         $this->largeMode = $largeMode;
+        $this->con = $con;
     }
 
     public function create($largeMode) {
@@ -36,19 +37,30 @@ class VideoGridItem {
                 </div>";
     }
 
-    public function createSuggestions($largeMode) {
+    public function createFeatureSelect($largeMode) {
         $thumbnail = $this->createThumbnail();
         $details = $this->createDetails($largeMode);
         $duration = $this->video->getDuration();
-        $url = "watch.php?id=".$this->video->getId();
+        $videoId = $this->video->getId();
+        $deleteButton = ButtonProvider::createDeleteButton($this->con, $videoId);
+        $featureButton = ButtonProvider::createFeatureButton($this->con, $videoId);
 
-        return "<div class='col mt-3'>
-                    <a class='text-light' href='$url' style='text-decoration:none;'>
+        return "<div class='col-lg-3 mt-3'>
+                    <a class='text-light' href='watch.php?id= . $videoId' style='text-decoration:none;'>
                     <div class=''>$thumbnail</div>
-                    <div class='p-1 mousehover'>$details</div>
+                    <div class='p-1 mousehover'>
+                        $details
+                    </div>
                     </a>
+                    <div class='d-flex justify-content-end'>
+                        <div class='btn-group'>
+                            $featureButton
+                            $deleteButton
+                        </div>
+                    </div>
                 </div>";
     }
+
 
     public function createAttractionItem($largeMode) {
         $thumbnail = $this->createThumbnail();
@@ -74,7 +86,7 @@ class VideoGridItem {
         $thumbnail = $this->video->getThumbnail();
 
 
-        return "<img class='col-sm-12' src='$thumbnail' width:'100%'>";
+        return "<img class='col-sm-12' src='../$thumbnail' alt='$thumbnail' width:'100%'>";
     }
 
     private function createDetails($homepage) {
