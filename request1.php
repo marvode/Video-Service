@@ -7,11 +7,10 @@ $requestObj = new Request($con, $userLoggedInObj);
 
 if(isset($_POST["submit"])) {
     $requestAmount = $_POST["amount"];
-    $accountName = $_POST["accountName"];
-    $accountNo = $_POST["accountNo"];
-    $bankName = $_POST["bankName"];
+    $bankName = $_POST["paymentMedium"];
+    $accountName = $_POST["paymentId"];
 
-    if($requestObj->requestWithdrawal($requestAmount, $accountName, $accountNo, $bankName, 0)) {
+    if($requestObj->requestWithdrawal($requestAmount, $accountName, "null", $bankName, 1)) {
         echo "<h3>Request Submitted Successfully</h3>";
         exit();
     }

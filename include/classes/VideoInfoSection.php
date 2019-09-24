@@ -19,7 +19,7 @@ class VideoInfoSection {
         $views = $this->video->getViews();
 
         $videoInfoControls = new VideoInfoControls($this->video, $this->userLoggedInObj);
-        $controls = $videoInfoControls->create();
+        $controls = User::isLoggedIn() ? $videoInfoControls->create() : "";
 
         return "<div class=''>
                     <br>
@@ -38,13 +38,33 @@ class VideoInfoSection {
         $uploadedBy = $this->video->getUploadedBy();
         $profileButton = ButtonProvider::createUserProfilePic($this->con, $uploadedBy);
 
-        if($uploadedBy == $this->userLoggedInObj->getUsername() && false) {
-            return "";
-        }
-        else {
-            $userToObject = new User($this->con, $uploadedBy);
-            $videoId = $this->video->getId();
-            $actionButton = ButtonProvider::createSubscriberButton($this->con, $userToObject, $this->userLoggedInObj, $videoId);
+        if(User::isLoggedIn()) {
+            if($uploadedBy == $this->userLoggedInObj->getUsername()) {
+                $videoId = $this->video->getId();
+                $actionButton = ButtonProvider::createDeleteButton($this->con, $videoId);
+            }
+            else {
+
+                $userToObject = new User($this->con, $uploadedBy);
+                $actionButton = ButtonProvider::createSubscriberButton($this->con, $userToObject, $this->userLoggedInObj);
+            }
+            return "<div class=''>
+                        <div class='text-light'>
+                            $profileButton
+                            <a class='text-light' style='text-decoration: none;' href='profile.php?username=$uploadedBy'>
+                                $uploadedBy
+                            </a>
+                            <div class=''>
+                                <span class=''>Uploaded $uploadDate</span>
+                            </div>
+                            $actionButton
+                        </div>
+                        <hr>
+                        <div class=''>
+                            <h5>Description</h5>
+                            $description
+                        </div>
+                    </div>";
         }
 
         return "<div class=''>
@@ -56,7 +76,6 @@ class VideoInfoSection {
                         <div class=''>
                             <span class=''>Uploaded $uploadDate</span>
                         </div>
-                        $actionButton
                     </div>
                     <hr>
                     <div class=''>

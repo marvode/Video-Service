@@ -35,13 +35,23 @@ class ProfileGenerator {
         $name = $this->profileData->getProfileUserFullName();
         $subCount = $this->profileData->getSubscriberCount();
 
-        $button = $this->createHeaderButton();
+        $button = User::isLoggedIn() ? $this->createHeaderButton() : "";
         $editDetails = $this->createEditDetailsButton();
         $rechargebutton = $this->createRechargeButton();
-        $requestWithdrawal = $this->requestWithdrawal();
+        $requestTab = $this->createRequestWithdrawal();
         $requestWithdrawal2 = $this->requestWithdrawal2();
 
+        if($this->profileUsername != $this->userLoggedInObj->getUsername()) {
+            $upgrade = "";
+        }
+        else {
+            $upgrade = $this->createUpgradeSection();
+        }
+
         return "<div class='row'>
+                    $upgrade
+                </div>
+                <div class='row'>
                     <div class='offset-lg-4 col-lg-4'>
                         <div class='d-flex justify-content-center'>
                             <div class=''><img class='img-fluid ' src='$profileImage' style='max-height: 300px'></div>
@@ -52,7 +62,7 @@ class ProfileGenerator {
                         $subCount subscribers
                     </div>-->
                     <div class='col-lg-4 '>
-                        $requestWithdrawal
+                        $requestTab
                     </div>
                 </div>
                 </div>
@@ -63,8 +73,46 @@ class ProfileGenerator {
                             $rechargebutton
                             $editDetails
                             $requestWithdrawal2
-                        </div></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>";
+    }
+
+    public function createRequestWithdrawal() {
+        if($this->userLoggedInObj->getUsername() != $this->profileData->getProfileUsername()) {
+            return "";
+        }
+        else {
+            $requestWithdrawal = $this->requestWithdrawal();
+
+            $others = "<form method='POST' action='request1.php'>
+                            <div class='form-group '><input type='text' class='form-control' name='amount' placeholder='Amount in USD (eg. 20)'></div>
+                            <div class='form-group '><input type='text' class='form-control' name='paymentMedium' placeholder='Enter Payment Gateway'></div>
+                            <div class='form-group '><input type='text' class='form-control' name='paymentId' placeholder='User ID'></div>
+                            <div class='form-group d-flex justify-content-end'><button type='submit' name='submit' class='btn btn-secondary'>Submit</button></div>
+                        </form>";
+
+            return "<h4>Request Withdrawal</h4>
+                    <ul class='nav nav-tabs' role='tablist'>
+                        <li class='nav-item'>
+                        <a class='nav-link  text-secondary active' id='bank-tab' data-toggle='tab'
+                            href='#bank' role='tab' aria-controls='others' aria-selected='true'>BANK</a>
+                        </li>
+                        <li class='nav-item'>
+                        <a class='nav-link text-secondary' id='others-tab' data-toggle='tab' href='#others' role='tab'
+                            aria-controls='others' aria-selected='false'>OTHERS</a>
+                        </li>
+                    </ul><br>
+                    <div class='tab-content channelContent'>
+                        <div class='tab-pane fade show active' id='bank' role='tabpanel' aria-labelledby='videos-tab'>
+                            $requestWithdrawal
+                        </div>
+                        <div class='tab-pane fade' id='others' role='tabpanel' aria-labelledby='about-tab'>
+                            $others
+                        </div>
                     </div>";
+        }
     }
 
     public function createTabsSection() {
@@ -110,21 +158,57 @@ class ProfileGenerator {
                 </div>";
     }
 
-    private function requestWithdrawal() {
-        if($this->userLoggedInObj->getUsername() != $this->profileData->getProfileUsername()) {
-            return "";
+    private function createUpgradeSection() {
+        if($this->userLoggedInObj->isPremium()) {
+            $downgradeDate = date("d M, Y", $this->userLoggedInObj->getDowngradeDate());
+            if($this->userLoggedInObj->getSubscriptionCost() == 0) {
+                $button = ButtonProvider::createSetSubscriptionButton($this->userLoggedInObj->getUsername());
+                return "<div class='form-inline'>
+                            <div class='input-group'>
+                                <input type='text' class='form-control' id='subscriptionAmount' placeholder='Set Subscription Cost'>
+                                <div class='input-group-append'>
+                                    $button
+                                </div>
+                            </div>
+                        </div>";
+            }
+            else {
+                $button = ButtonProvider::createSetSubscriptionButton($this->userLoggedInObj->getUsername());
+                return "<div class='row'>
+                            <div class='col-12'>
+                                <h6><em>Your Premium membership will expire $downgradeDate</em></h6>
+                            </div>
+                            <div class='form-inline'>
+                                <div class='input-group'>
+                                    <input type='text' class='form-control' id='subscriptionAmount' placeholder='Change Subscription Cost'>
+                                    <div class='input-group-append'>
+                                        $button
+                                    </div>
+                                </div>
+                            </div>
+                        </div>";
+            }
         }
         else {
-            return "<h4>Request Withdrawal</h4>
-                    <hr>
-                    <form method='POST' action='request.php'>
+            $button = ButtonProvider::upgradeButton($this->userLoggedInObj->getUsername());
+
+            $upgrade = "<div class='col-lg-3'>
+                            <p>Upgrade to Premium membership plan and get paid per subscription to your channel</p>
+                            $button
+                        </div>";
+            return $upgrade;
+        }
+    }
+
+    private function requestWithdrawal() {
+
+            return "<form method='POST' action='request.php'>
                         <div class='form-group '><input type='text' class='form-control' name='amount' placeholder='Amount in USD (eg. 20)'></div>
                         <div class='form-group '><input type='text' class='form-control' name='accountName' placeholder='Your Account Name'></div>
                         <div class='form-group '><input type='text' class='form-control' name='accountNo' placeholder='Your Account Number'></div>
                         <div class='form-group '><input type='text' class='form-control' name='bankName' placeholder='Your Bank Name'></div>
                         <div class='form-group d-flex justify-content-end'><button type='submit' name='submit' class='btn btn-secondary'>Submit</button></div>
                     </form>";
-        }
     }
 
     private function requestWithdrawal2() {
@@ -155,15 +239,18 @@ class ProfileGenerator {
     }
 
     private function createHeaderButton() {
-        if($this->userLoggedInObj->getUsername() == $this->profileData->getProfileUsername()) {
-            return "";
-        }
-        else {
+        if($this->userLoggedInObj->getUsername() != $this->profileData->getProfileUsername()) {
             return ButtonProvider::createSubscriberButton(
                     $this->con,
                     $this->profileData->getProfileUserObj(),
                     $this->userLoggedInObj
                 );
+        }
+        elseif(User::isLoggedIn() == false) {
+            return "";
+        }
+        else {
+            return "";
         }
     }
 

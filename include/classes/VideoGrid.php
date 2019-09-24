@@ -304,7 +304,7 @@ class VideoGrid {
     public function createLarge($videos, $title, $showFilter) {
         $this->gridClass .= " large";
         $this->largeMode = true;
-        return $this->create($videos, $title, $showFilter);
+        return $this->create($videos, $title, $showFilter, 1, "");
     }
 
     public function contentCategory() {
@@ -316,7 +316,7 @@ class VideoGrid {
 
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $row = $row['name'];
-            $categories .= "<a class='btn btn-red align-self-center text-light col-lg-12' href='filter.php?category=$row' style='background-color: #000; border-radius: 0px; margin-bottom: 1px;'>$row</a>";
+            $categories .= "<a class='square_btn btn btn-red align-self-center text-light col-lg-12' href='filter.php?category=$row' style='margin-bottom: 1px;'>$row</a>";
         }
         $categories .= "</div>";
         return $categories;

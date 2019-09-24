@@ -53,8 +53,32 @@ class User {
         return (float)$this->sqlData["subscriptionCost"];
     }
 
+    public function setSubscriptionCost($amount) {
+        $query = $this->con->prepare("UPDATE users SET subscriptionCost=:amount WHERE id=:id");
+        $query->bindParam(":amount", $amount);
+        $query->bindParam(":id", $id);
+        $id = $this->getUserId();
+        $query->execute();
+        return true;
+    }
+
     public function getSignUpDate() {
         return $this->sqlData["signUpDate"];
+    }
+
+    public function getUpgradeDate() {
+        $query = $this->con->prepare("SELECT upgradeDate FROM premiumUsers WHERE userId=:id ORDER BY id DESC");
+        $query->bindParam(":id", $id);
+        $id = $this->getUserId();
+        $query->execute();
+        if($query->rowCount() > 0) {
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+            $datetime = explode(" ", $row["upgradeDate"]);
+            $date = explode("-", $datetime[0]);
+            $time = explode(":", $datetime[1]);
+
+            return mktime((int)$time[0], (int)$time[1], (int)$time[2], (int)$date[1], (int)$date[2], (int)$date[0]);
+        }
     }
 
     public function isSubscribedTo($userTo) {
@@ -90,6 +114,98 @@ class User {
         return $subs;
     }
 
+    private function setUpgrade($accountType) {
+        $query = $this->con->prepare("UPDATE users SET accountType=:accountType WHERE user_name=:user");
+        $query->bindParam(":accountType", $accountType);
+        $query->bindParam(":user", $username);
+        $username = $this->getUsername();
+
+        $query->execute();
+    }
+
+    public function recordUpgrade($upgrade) {
+        if($upgrade == true){
+            $this->setUpgrade("Premium");
+            $query = $this->con->prepare("INSERT INTO premiumUsers (userId) VALUES (:userId)");
+        }
+        else {
+            $this->setUpgrade("Basic");
+            $query = $this->con->prepare("DELETE FROM premiumUsers WHERE userId=:userId");
+        }
+
+        $query->bindParam(":userId", $userId);
+        $userId = $this->getUserId();
+
+        $query->execute();
+    }
+
+    public function isPremium() {
+        $query = $this->con->prepare("SELECT * FROM users WHERE id=:userId");
+        $query->bindParam(":userId", $userId);
+        $userId = $this->getUserId();
+        $query->execute();
+        $data = $query->fetch(PDO::FETCH_ASSOC)["accountType"];
+
+        if($data == "Premium") {
+            return true;
+        }
+        return false;
+    }
+
+    public function upgrade() {
+        if(Transaction::debitUser(10, $this, $this->con)) {
+            $this->recordUpgrade(true);
+            return true;
+        }
+        return false;
+    }
+
+    public function downgrade() {
+        if(((int)time() >= $this->getDowngradeDate()) && !$this->upgrade()) {
+            $this->recordUpgrade(false);
+            $this->setSubscriptionCost(0);
+        }
+    }
+
+    private function getSubscriptionDate($userTo, $userFrom) {
+        $query = $this->con->prepare("SELECT * FROM subscribers WHERE userTo=:userTo AND userFrom=:userFrom");
+        $query->bindParam(":userTo", $userTo);
+        $query->bindParam(":userFrom", $userFrom);
+        $query->execute();
+
+        $date =  $query->fetch(PDO::FETCH_ASSOC)["date"];
+        return strtotime($date);
+    }
+
+    public function unsubscribe($userTo, $userFrom) {
+        $query = $this->con->prepare("DELETE FROM subscribers WHERE userTo=:userTo AND userFrom=:userFrom");
+        $query->bindParam(":userTo", $userTo);
+        $query->bindParam(":userFrom", $userFrom);
+
+        $query->execute();
+    }
+
+    public function subscriptionCheck($userFrom) {
+        $thirtyDays = 30 * 24 * 60 * 60;
+        $subscriptions = $this->getSubscriptions();
+        $subarray = array();
+        foreach($subscriptions as $num) {
+            array_push($subarray, $num->getUsername());
+        }
+        foreach ($subarray as $subscribeTo) {
+            $expiryDate = $this->getSubscriptionDate($subscribeTo, $userFrom) + $thirtyDays;
+            $currentDate = time();
+
+            if($currentDate >= $expiryDate) {
+                echo date("d M Y", $currentDate);
+                $this->unsubscribe($subscribeTo, $userFrom);
+            }
+        }
+    }
+
+    public function getDowngradeDate() {
+        return (int)$this->getUpgradeDate() + (60 * 60 * 24 * 366);
+    }
 }
 
 ?>

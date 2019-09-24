@@ -7,9 +7,9 @@ class Request {
         $this->userLoggedInObj = $userLoggedInObj;
     }
 
-    public function requestWithdrawal($amount, $accountName, $accountNo, $bankName) {
+    public function requestWithdrawal($amount, $accountName, $accountNo, $bankName, $others) {
         if($this->debitUser($amount)) {
-            Transaction::recordWithdrawal($this->con, $amount, $this->userLoggedInObj->getUserId(), 0, $accountName, $accountNo, $bankName);
+            Transaction::recordWithdrawal($this->con, $amount, $this->userLoggedInObj->getUserId(), 0, $accountName, $accountNo, $bankName, $others);
 
             return true;
         }
@@ -20,7 +20,7 @@ class Request {
         $query = $this->con->prepare("SELECT * FROM withdrawals WHERE userId=:userId ORDER BY id DESC");
         $query->bindParam(":userId", $userId);
         $userId = $this->userLoggedInObj->getUserId();
-        
+
         $query->execute();
 
         $html = "<table class='table table-striped'>

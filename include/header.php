@@ -12,6 +12,10 @@ require_once("include/classes/Transactions.php");
 $usernameLoggedIn = isset($_SESSION["userLoggedIn"]) ? $_SESSION["userLoggedIn"] : "";
 
 $userLoggedInObj = new User($con, $usernameLoggedIn);
+if(User::isLoggedIn()){
+    $userLoggedInObj->downgrade();
+    $userLoggedInObj->subscriptionCheck($usernameLoggedIn);
+}
 
 ?>
 <!DOCTYPE html>
@@ -21,6 +25,7 @@ $userLoggedInObj = new User($con, $usernameLoggedIn);
         <title>eVISION360</title>
         <link rel="stylesheet" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/button.css">
 
         <script src="assets/js/jquery.js" charset="utf-8"></script>
         <script src="assets/js/popper.js" charset="utf-8"></script>
@@ -48,11 +53,11 @@ $userLoggedInObj = new User($con, $usernameLoggedIn);
                 </button> <a class="navbar-brand" href="index.php">eVISION360</a>
 
                 <div class="collapse navbar-collapse col-lg-10 justify-content-end" id="bs-example-navbar-collapse-1">
-                    <form class="form-inline mr-auto ml-auto" role="search">
+                    <form action="search.php" method="GET" class="form-inline mr-auto ml-auto" role="search">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text" class="form-control" name="search" placeholder="Search">
                             <div class="input-group-append">
-                                <button type="reset" class="btn btn-outline-light bg-light" style="border-width: 0px;">
+                                <button class="btn btn-outline-light bg-light" style="border-width: 0px;">
                                     <img src="assets/images/icons/search.png" alt="" width="22px">
                                 </button>
                             </div>
@@ -61,6 +66,7 @@ $userLoggedInObj = new User($con, $usernameLoggedIn);
                     <ul class="nav navbar-nav">
                         <li class="nav-item"><a href='#' class='nav-link disabled' style:'padding-right: 1em; padding-left: 1em'><span style="color: red;">Live Stream<sup>coming soon</sup></span></a></li>
                         <li class="nav-item"><?php echo ButtonProvider::createUserUploadButton() ?></li>
+                        <li class="nav-item"><a class="nav-link" href="audio.php">Audio</a></li>
                         <li class="nav-item"><?php echo ButtonProvider::createSubscriptionsButton() ?></li>
                         <li class="nav-item"><?php echo ButtonProvider::createUserProfileNavigationButton($con, $usernameLoggedIn) ?></li>
                         <li class="nav-item"><?php echo ButtonProvider::createLogOutButton() ?></li>

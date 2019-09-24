@@ -90,32 +90,39 @@ class ButtonProvider {
         }
     }
 
-    public static function createSubscriberButton($con, $userToObj, $userLoggedInObj, $videoId) {
+    public static function createSubscriberButton($con, $userToObj, $userLoggedInObj) {
         $userTo = $userToObj->getUsername();
         $userLoggedIn = $userLoggedInObj->getUsername();
 
-        if($userTo == $userLoggedIn) {
-            $button = ButtonProvider::createDeleteButton($con, $videoId);
-            return "<div class='d-flex justify-content-end'>
-                        $button
-                    </div>";
-        }
         $isSubscribedTo = $userLoggedInObj->isSubscribedTo($userTo);
         $buttonText = $isSubscribedTo ? "SUBSCRIBED" : "SUBSCRIBE";
         $buttonText .= " " . $userToObj->getSubscriberCount();
 
         $buttonClass = $isSubscribedTo ? "btn-secondary" : "btn-danger";
 
-        $button = ButtonProvider::createHyperlinkButton($buttonText, null, "subscribe.php?videoId=$videoId", "btn " . $buttonClass);
+        $button = ButtonProvider::createButton($buttonText, null, "", "subscribeButton btn " . $buttonClass);
 
         return "<div class='d-flex justify-content-end'>
                     $button
+                </div>
+                <div class='alert alert-warning alert-dismissible fade show' id='subscribeAlert' role='alert' style='display: none;'>
+                    Are You Sure?
+                    <button class=' btn alert-warning' onclick='subscribe(\"$userTo\", \"$userLoggedIn\")'>YES</button>
+                    <button class='btn alert-warning' id='closeSubscribe'>NO</button>
                 </div>";
 
     }
 
     public static function createDeleteButton($con, $videoId) {
         return ButtonProvider::createButton("Delete", null, "deleteFile(\"$videoId\", this)", "btn btn-danger");
+    }
+
+    public static function upgradeButton($usernameLoggedIn) {
+        return ButtonProvider::createButton("Upgrade", null, "upgrade(\"$usernameLoggedIn\", this)", "btn btn-primary");
+    }
+
+    public static function createSetSubscriptionButton($usernameLoggedIn) {
+        return ButtonProvider::createButton("Set", null, "setSubscription(\"$usernameLoggedIn\", this)", "btn btn-success");
     }
 }
 ?>

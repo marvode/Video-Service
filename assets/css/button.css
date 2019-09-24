@@ -1,0 +1,48 @@
+.square_btn{
+    font-size: 0.9em;
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    background: #3d3f40;/*Button Color*/
+    color: #fff;
+    border-bottom: solid 5px #2d2d2e;/*daker than background*/
+    border-right: solid 5px #4e5052;/*darker than background*/
+}
+
+.square_btn:before{
+    content: " ";
+    position: absolute;
+    bottom: -5px;
+    left: -1px;
+    width: 0;
+    height: 0;
+    border-width: 0 6px 6px 0px;
+    border-style: solid;
+    border-color: transparent;
+    border-bottom-color: #4e5052;
+}
+
+.square_btn:after{
+    content: " ";
+    position: absolute;
+    top: -1px;
+    right: -5px;
+    width: 0;
+    height: 0;
+    border-width: 0px 6px 6px 0px;
+    border-style: solid;
+    border-color: #4e5052;
+    border-bottom-color: transparent;
+}
+
+.square_btn:active{ /*on click*/
+    border:none;
+    -ms-transform: translate(6px,6px);
+    -webkit-transform: translate(6px,6px);
+    transform: translate(6px,6px);/*move LowerRight*/
+}
+
+.square_btn:active:after,
+.square_btn:active:before {/*on click*/
+    content: none;/*Border disappears*/
+}

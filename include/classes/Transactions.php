@@ -1,18 +1,19 @@
 <?php
 class Transaction {
-    private $con, $video, $userLoggedInObj, $userLoggedIn;
+    private $con, $userTo, $userLoggedInObj, $userLoggedIn;
     private $percentage = 0.7;
 
-    public function __construct($con, $video, $userLoggedInObj) {
+    public function __construct($con, $userTo, $userLoggedInObj) {
         $this->con = $con;
-        $this->video = $video;
+        $this->userTo = $userTo;
         $this->userLoggedInObj = $userLoggedInObj;
         $this->userLoggedIn = $userLoggedInObj->getUsername();
     }
 
-    public function initiateSubscribe($amount) {
-        $amount = (int)$amount;
-        if($this->debitUser($amount)) {
+    public function initiateSubscribe() {
+        $userToObj = new User($this->con, $this->userTo);
+        $amount = (float)$userToObj->getSubscriptionCost();
+        if($this->debitUserForSubscription($amount)) {
             $this->creditUserTo($amount);
             $this->creditAdmin($amount);
 
@@ -21,9 +22,9 @@ class Transaction {
         return false;
     }
 
-    private function getAdminBalance() {
+    public static function getAdminBalance($con) {
         $adminId = 1;
-        $query = $this->con->prepare("SELECT * FROM admin WHERE id=:id");
+        $query = $con->prepare("SELECT * FROM admin WHERE id=:id");
         $query->bindParam(":id", $adminId);
         $query->execute();
 
@@ -32,7 +33,7 @@ class Transaction {
     }
 
     private function getUserToBalance() {
-        $userTo = $this->video->getUploadedBy();
+        $userTo = $this->userTo;
         $query = $this->con->prepare("SELECT * FROM users WHERE user_name=:userTo");
         $query->bindParam(":userTo", $userTo);
         $query->execute();
@@ -44,7 +45,7 @@ class Transaction {
     private function creditUserTo($amount) {
 
         $uploaderProfit = $this->percentage * $amount;
-        $userTo = $this->video->getUploadedBy();
+        $userTo = $this->userTo;
         $balance = $this->getUserToBalance() + $uploaderProfit;
 
 
@@ -62,7 +63,7 @@ class Transaction {
 
         $adminProfit = (1 - $this->percentage) * $amount;
         $admin = 1;
-        $balance = $this->getAdminBalance() + $adminProfit;
+        $balance = Transaction::getAdminBalance($this->con) + $adminProfit;
 
 
         $query = $this->con->prepare("UPDATE admin SET balance=:balance WHERE id=:admin");
@@ -75,7 +76,7 @@ class Transaction {
         $this->recordTransaction($adminProfit, $userLoggedIn, 'admin');
     }
 
-    private function debitUser($amount) {
+    private function debitUserForSubscription($amount) {
         $balance = $this->userLoggedInObj->getBalance();
         if($balance >= $amount) {
             $balance = $balance - $amount;
@@ -90,6 +91,53 @@ class Transaction {
         return false;
     }
 
+    public static function debitUser($amount, $userLoggedInObj, $con) {
+        $balance = $userLoggedInObj->getBalance();
+        if($balance >= $amount) {
+            $balance = $balance - $amount;
+            $id = $userLoggedInObj->getUserId();
+            $query = $con->prepare("UPDATE users SET balance=:balance where id=:id");
+            $query->bindParam(":balance", $balance);
+            $query->bindParam(":id", $id);
+
+            $query->execute();
+            Transaction::creditAdmin2($amount, $con, $userLoggedInObj->getUsername());
+            return true;
+        }
+        return false;
+    }
+
+    public static function creditUser($amount, $userLoggedInObj, $con) {
+        $balance = $userLoggedInObj->getBalance();
+        $balance = $balance + $amount;
+        $id = $userLoggedInObj->getUserId();
+        $query = $con->prepare("UPDATE users SET balance=:balance where id=:id");
+        $query->bindParam(":balance", $balance);
+        $query->bindParam(":id", $id);
+        $query->execute();
+
+    }
+
+    public static function creditAdmin2($amount, $con, $usernameLoggedIn) {
+        $admin = 1;
+        $balance = Transaction::getAdminBalance($con) + $amount;
+        $query = $con->prepare("UPDATE admin SET balance=:balance WHERE id=:admin");
+        $query->bindParam(":balance", $balance);
+        $query->bindParam(":admin", $admin);
+        $query->execute();
+
+        Transaction::recordTransaction2($amount, $usernameLoggedIn, 'admin', $con);
+    }
+
+    public static function recordTransaction2($amount, $userFrom, $userTo, $con) {
+        $query = $con->prepare("INSERT INTO transactions (userFrom, userTo, amount) VALUES (:userFrom, :userTo, :amount)");
+        $query->bindParam(":userFrom", $userFrom);
+        $query->bindParam(":userTo", $userTo);
+        $query->bindParam(":amount", $amount);
+
+        $query->execute();
+    }
+
     private function recordTransaction($amount, $userFrom, $userTo) {
         $query = $this->con->prepare("INSERT INTO transactions (userFrom, userTo, amount) VALUES (:userFrom, :userTo, :amount)");
         $query->bindParam(":userFrom", $userFrom);
@@ -99,16 +147,30 @@ class Transaction {
         $query->execute();
     }
 
-    public static function recordWithdrawal($con, $amount, $userId, $withdrawalStatus, $accountName, $accountNo, $bankName) {
-        $query = $con->prepare("INSERT INTO withdrawals (userId, amount, withdrawalStatus, accountName, accountNo, bankName) VALUES (:userId, :amount, :withdrawalStatus, :accountName, :accountNo, :bankName)");
-        $query->bindParam(":userId", $userId);
-        $query->bindParam(":amount", $amount);
-        $query->bindParam(":accountName", $accountName);
-        $query->bindParam(":accountNo", $accountNo);
-        $query->bindParam(":bankName", $bankName);
-        $query->bindParam(":withdrawalStatus", $withdrawalStatus);
+    public static function recordWithdrawal($con, $amount, $userId, $withdrawalStatus, $accountName, $accountNo, $bankName, $others) {
+        if($others !=0) {
+            $query = $con->prepare("INSERT INTO withdrawals (userId, amount, withdrawalStatus, accountName, accountNo, bankName) VALUES (:userId, :amount, :withdrawalStatus, :accountName, :accountNo, :bankName)");
+            $query->bindParam(":userId", $userId);
+            $query->bindParam(":amount", $amount);
+            $query->bindParam(":accountName", $accountName);
+            $query->bindParam(":accountNo", $accountNo);
+            $query->bindParam(":bankName", $bankName);
+            $query->bindParam(":withdrawalStatus", $withdrawalStatus);
 
-        $query->execute();
+            $query->execute();
+        }
+        else {
+            $query = $con->prepare("INSERT INTO withdrawals (userId, amount, withdrawalStatus, accountName, accountNo, bankName, others) VALUES (:userId, :amount, :withdrawalStatus, :accountName, :accountNo, :bankName, :others)");
+            $query->bindParam(":userId", $userId);
+            $query->bindParam(":amount", $amount);
+            $query->bindParam(":accountName", $accountName);
+            $query->bindParam(":accountNo", $accountNo);
+            $query->bindParam(":bankName", $bankName);
+            $query->bindParam(":withdrawalStatus", $withdrawalStatus);
+            $query->bindParam(":others", $others);
+
+            $query->execute();
+        }
     }
 
     public function withdrawalRequest($amount) {

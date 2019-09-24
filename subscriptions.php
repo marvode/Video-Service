@@ -1,4 +1,5 @@
 <?php require_once("include/header.php");
+require_once("include/afterNav.php");
 
 if(!User::isLoggedIn()) {
     header("Location: sign_in.php");

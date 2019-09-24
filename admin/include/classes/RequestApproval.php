@@ -21,9 +21,9 @@ class RequestView {
                     <thead class='thead-dark'>
                         <th>Username</th>
                         <th>Withdrawal Amount</th>
-                        <th>Account Name</th>
+                        <th>Bank Name/Payment Gateway</th>
+                        <th>Account Name/User ID</th>
                         <th>Account No</th>
-                        <th>Bank Name</th>
                         <th>Request Date</th>
                         <th></th>
                     </thead>
@@ -43,9 +43,9 @@ class RequestView {
             $html .= "<tr>
                         <td>$username</td>
                         <td>$amount</td>
+                        <td>$bankName</td>
                         <td>$accountName</td>
                         <td>$accountNo</td>
-                        <td>$bankName</td>
                         <td>$date</td>
                         <td>$approveButton</td>
                     </tr>";

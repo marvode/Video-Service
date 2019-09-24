@@ -1,9 +1,10 @@
 <?php
 class VideoUploadForm {
-    private $con;
+    private $con, $userLoggedInObj;
 
-    public function __construct($con) {
+    public function __construct($con, $userLoggedInObj) {
         $this->con = $con;
+        $this->userLoggedInObj = $userLoggedInObj;
     }
 
     public function createUploadForm() {
@@ -12,7 +13,7 @@ class VideoUploadForm {
         $descriptionInput = $this->createDescriptionInput(null);
         $categoriesInput = $this->createCategoriesInput(null);
         $uploadButton = $this->createUploadButton();
-        $contentInput = $this->createContentInput(null);
+        $contentInput = $this->userLoggedInObj->isPremium() ? $this->createContentInput(null) : '';
         $languageInput = $this->createLanguageInput();
         return "<form action='processing.php' method='POST' enctype='multipart/form-data'>
                     $fileInput

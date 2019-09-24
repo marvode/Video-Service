@@ -2,14 +2,9 @@
 require_once("include/header.php");
 require_once("include/afterNav.php");
 
-$videoId = $_GET["videoId"];
+$userTo = $_GET["userTo"];
 
-$video = new Video($con, $videoId, $userLoggedInObj);
-$userTo = $video->getUploadedBy();
-$userToObj = new User($con, $userTo);
-$subscriptionCost = $userToObj->getSubscriptionCost();
-
-function subscription($con, $userLoggedInObj, $userTo, $video) {
+function subscription($con, $userLoggedInObj, $userTo) {
     //check if user is SUBSCRIBED
     $userFrom = $userLoggedInObj->getUsername();
     $query = $con->prepare("SELECT * FROM subscribers WHERE userTo=:userTo AND userFrom=:userFrom");
@@ -20,13 +15,10 @@ function subscription($con, $userLoggedInObj, $userTo, $video) {
 
     // insert if user not subscribed
     if($query->rowCount() == 0) {
-        $userToObj = new User($con, $userTo);
-        $subscriptionCost = $userToObj->getSubscriptionCost();
-
         if($subscriptionCost != 0) {
-            $transaction = new Transaction($con, $video, $userLoggedInObj);
+            $transaction = new Transaction($con, $userTo, $userLoggedInObj);
 
-            if($transaction->initiateSubscribe($subscriptionCost)){
+            if($transaction->initiateSubscribe()){
                 $query = $con->prepare("INSERT INTO subscribers(userTo, userFrom) VALUES(:userTo, :userFrom)");
                 $query->bindParam(":userTo", $userTo);
                 $query->bindParam(":userFrom", $userFrom);
@@ -60,7 +52,7 @@ function subscription($con, $userLoggedInObj, $userTo, $video) {
 
 
 if(User::isLoggedIn()) {
-    if(subscription($con, $userLoggedInObj, $userTo, $video)) {
+    if(subscription($con, $userLoggedInObj, $userTo)) {
         echo "Success";
     }
     else {
