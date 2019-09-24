@@ -6,6 +6,8 @@ function subscribe(userTo, userFrom) {
 
             let buttonText = $(".subscribeButton").hasClass("btn-danger") ? "SUBSCRIBE" : "SUBSCRIBED";
             $(".subscribeButton").text(buttonText);
+
+            $("#subscribeAlert").fadeOut('slow');
         }
         else {
             alert("Unable to subscribe to this channel: Insufficient Funds");

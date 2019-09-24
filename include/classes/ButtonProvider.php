@@ -107,7 +107,7 @@ class ButtonProvider {
                 </div>
                 <div class='alert alert-warning alert-dismissible fade show' id='subscribeAlert' role='alert' style='display: none;'>
                     Are You Sure?
-                    <button class=' btn alert-warning' onclick='subscribe(\"$userTo\", \"$userLoggedIn\")'>YES</button>
+                    <button class='btn alert-warning' onclick='subscribe(\"$userTo\", \"$userLoggedIn\")'>YES</button>
                     <button class='btn alert-warning' id='closeSubscribe'>NO</button>
                 </div>";
 

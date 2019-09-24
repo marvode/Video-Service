@@ -4,9 +4,13 @@
 
         <footer class="sticky-bottom page-footer bg-dark">
             <div class='container text-light' style="padding: 3em;">
-                <div class="d-flex justify-content-center">
+                <div class="row d-flex justify-content-center">
                     <a class='btn btn-xlarge btn-dark' href="terms.php">Terms of Usage</a>
                     <a class='btn btn-xlarge btn-dark' href="privacy.php">Privacy Policy</a>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class='d-flex justify-content-center'><a class='btn btn-dark' href="contact.php">Contact Us</a></div>
+                    <div class='d-flex justify-content-center'><a class='btn btn-dark' href="about.php">About</a></div>
                 </div>
                 <br>
                 <p class="d-flex justify-content-center">evision360.com is operated by Glorianto International Ltd</p>
