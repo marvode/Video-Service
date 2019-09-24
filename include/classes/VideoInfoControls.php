@@ -13,7 +13,7 @@ class VideoInfoControls {
         $likeButton = $this->createLikeButton();
         $dislikeButton = $this->createDislikeButton();
 
-        return "<div class='d-flex justify-content-end' style='display:inline;'>
+        return "<div class='d-flex justify-content-end btn-group' style='display:inline;'>
                     $likeButton
                     $dislikeButton
                 </div>";
@@ -23,7 +23,7 @@ class VideoInfoControls {
         $text = $this->video->getLikes();
         $videoId = $this->video->getId();
         $action = "likeVideo(this, $videoId)";
-        $class = "likeButton";
+        $class = "likeButton btn";
 
         $imageSrc = "assets/images/icons/thumb-up.png";
 
@@ -38,7 +38,7 @@ class VideoInfoControls {
         $text = $this->video->getDislikes();
         $videoId = $this->video->getId();
         $action = "dislikeVideo(this, $videoId)";
-        $class = "dislikeButton";
+        $class = "dislikeButton btn";
 
         $imageSrc = "assets/images/icons/thumb-down.png";
 
