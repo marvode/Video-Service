@@ -1,3 +1,5 @@
+const url = "http://evision360.com/";
+
 function subscribe(userTo, userFrom) {
     $.post("ajax/subscribe.php", { userTo: userTo, userFrom: userFrom })
     .done(function(data) {
@@ -15,9 +17,16 @@ function subscribe(userTo, userFrom) {
     });
 }
 
+function topup(user, amount) {
+    console.log(amount);
+    $.post("ajax/topup.php", { user: user, amount: amount })
+    .done(function() {
+        window.location = url + "paymentverification.php?status=successful";
+    });
+}
+
 function setSubscription(username, button) {
     let amount = document.querySelector("#subscriptionAmount").value;
-    url = "http://localhost/video_service/"
     if(amount !== "") {
         $.post("ajax/setSubscription.php", {username: username, amount: amount})
         .done(function(count) {
@@ -36,7 +45,7 @@ function upgrade(username, button) {
     $.post("ajax/upgrade.php", { username: username })
     .done(function(result) {
         if(result == "1") {
-            window.location = "http://localhost/video_service/profile.php?username=" + username;
+            window.location = url + "profile.php?username=" + username;
         }
         else {
             $(button).text(result);
@@ -45,11 +54,21 @@ function upgrade(username, button) {
 
 }
 
+function deleteAudio(audioId, button) {
+    $.post("ajax/delete.php", { audioId: audioId })
+    .done(function() {
+        $(button).toggleClass("btn-danger");
+
+        var buttonText = $(button).hasClass("btn-danger") ? "DELETE" : "DELETED";
+        $(button).text(buttonText);
+    });
+}
+
 function deleteFile(videoId, button) {
     $.post("ajax/delete.php", { videoId: videoId })
     .done(function(count) {
         $(button).toggleClass("btn-danger");
-        window.location = "http://localhost/video_service/";
+        window.location = url;
 
         var buttonText = $(button).hasClass("btn-danger") ? "DELETE" : "DELETED";
         $(button).text(count);

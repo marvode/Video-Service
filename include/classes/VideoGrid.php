@@ -171,7 +171,7 @@ class VideoGrid {
     }
 
     public function generateItemsNew($noOfItems, $contentType) {
-        $query = $this->con->prepare("SELECT * FROM videos WHERE contentType=:contentType ORDER BY RAND() LIMIT :noOfItems");
+        $query = $this->con->prepare("SELECT * FROM videos WHERE contentType=:contentType ORDER BY id DESC LIMIT :noOfItems");
         $noOfItems = (int)$noOfItems;
         $query->bindParam(":noOfItems", $noOfItems, PDO::PARAM_INT);
         $query->bindParam(":contentType", $contentType, PDO::PARAM_INT);
@@ -203,7 +203,7 @@ class VideoGrid {
     }
 
     public function generateLatestItems($contentType) {
-        $query = $this->con->prepare("SELECT * FROM videos WHERE contentType=:contentType ORDER BY RAND() LIMIT 8");
+        $query = $this->con->prepare("SELECT * FROM videos WHERE contentType=:contentType ORDER BY id DESC LIMIT 8");
         $query->bindParam(":contentType", $contentType, PDO::PARAM_INT);
         $query->execute();
 

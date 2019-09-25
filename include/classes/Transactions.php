@@ -115,7 +115,6 @@ class Transaction {
         $query->bindParam(":balance", $balance);
         $query->bindParam(":id", $id);
         $query->execute();
-
     }
 
     public static function creditAdmin2($amount, $con, $usernameLoggedIn) {

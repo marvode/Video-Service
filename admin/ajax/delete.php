@@ -8,7 +8,25 @@ if(isset($_POST['videoId'])) {
     if(delete($con, $videoId)) {
         deleteThumbnail($con, $videoId);
         deleteVideo($con, $videoId);
-        
+
+    }
+}
+
+if(isset($_POST['messageId'])) {
+    $messageId = $_POST['messageId'];
+
+    $query = $con->prepare("DELETE FROM contact WHERE id=:messageId");
+    $query->bindParam(":messageId", $messageId);
+    $query->execute();
+}
+
+if(isset($_POST['audioId'])) {
+    $audioId = $_POST['audioId'];
+    echo "Count";
+    if(deleteAudio($con, $audioId)) {
+        $query = $con->prepare("DELETE FROM audio WHERE id=:audioId");
+        $query->bindParam(":audioId", $audioId);
+        $query->execute();
     }
 }
 
@@ -57,6 +75,26 @@ function deleteVideo($con, $videoId) {
 
 function delete($con, $videoId) {
     $filePath = "../" . getFilePath($con, $videoId);
+    if(!unlink($filePath)) {
+        echo "Could not delete file\n";
+        return false;
+    }
+
+    return true;
+}
+
+function getAudioFilePath($con, $audioId){
+    $query = $con->prepare("SELECT filePath FROM audio WHERE id=:audioId");
+    $query->bindParam(":audioId", $audioId);
+    $query->execute();
+
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+
+    return "../" .$result["filePath"];
+}
+
+function deleteAudio($con, $audioId) {
+    $filePath = "../" . getAudioFilePath($con, $audioId);
     if(!unlink($filePath)) {
         echo "Could not delete file\n";
         return false;

@@ -88,6 +88,14 @@ class ButtonProvider {
         return ButtonProvider::createButton("Delete", null, "deleteFile(\"$videoId\", this)", "btn btn-danger");
     }
 
+    public static function createDeleteAudioButton($con, $audioId) {
+        return ButtonProvider::createButton("Delete", null, "deleteAudio(\"$audioId\", this)", "btn btn-danger");
+    }
+
+    public static function createDeleteMessageButton($con, $messageId) {
+        return ButtonProvider::createButton("Delete", null, "deleteMessage(\"$messageId\", this)", "btn btn-danger");
+    }
+
     public static function createFeatureButton($con, $videoId) {
         $isFeatured = RequestView::isFeatured($con, $videoId);
         $buttonText = $isFeatured ? "FEATURED" : "Make Feature";

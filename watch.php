@@ -16,9 +16,10 @@ if(!isset($_GET["id"])) {
         <?php
         $videoId = $_GET["id"];
         $video = new Video($con, $videoId, $userLoggedInObj);
+        $contentType = $video->getContentType();
 
         if(!isset($_SESSION["userLoggedIn"])) {
-            if($video->getContentType() == 0){
+            if($contentType == 0){
                 $videoPlayer = new VideoPlayer($video, $userLoggedInObj);
                 echo $videoPlayer->create(true);
                 echo "<br>";
@@ -36,7 +37,7 @@ if(!isset($_GET["id"])) {
         }
 
         else {
-            if($video->getContentType() == 0){
+            if($contentType == 0 || $_SESSION["userLoggedIn"] == $video->getUploadedBy()){
                 $videoHistory = new VideoHistory($con, $video, $userLoggedInObj);
                 $videoHistory->create();
                 $videoPlayer = new VideoPlayer($video, $userLoggedInObj);
@@ -46,15 +47,13 @@ if(!isset($_GET["id"])) {
                     $video->incrementViews();
                 }
             }
-            elseif($video->getContentType() == 1 && $userLoggedInObj->isSubscribedTo($video->getUploadedBy())) {
+            elseif($contentType == 1 && $userLoggedInObj->isSubscribedTo($video->getUploadedBy())) {
                 $videoHistory = new VideoHistory($con, $video, $userLoggedInObj);
                 $videoHistory->create();
                 $videoPlayer = new VideoPlayer($video, $userLoggedInObj);
                 echo $videoPlayer->create(true);
                 echo "<br>";
-                if($_SESSION["userLoggedIn"] != $video->getUploadedBy()) {
-                    $video->incrementViews();
-                }
+                $video->incrementViews();
             }
 
             else {

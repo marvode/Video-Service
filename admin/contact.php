@@ -13,6 +13,7 @@ function getAllContacts($con) {
                     <th>Subject</th>
                     <th>Message</th>
                     <th>Date</th>
+                    <th></th>
                 </thead>
                 <tbody>";
 
@@ -23,6 +24,7 @@ function getAllContacts($con) {
         $email = $row["email"];
         $subject = $row["subject"];
         $message = $row["message"];
+        $delete = ButtonProvider::createDeleteMessageButton($con, $row["id"]);
 
         $html .= "<tr>
                     <td>$username</td>
@@ -31,6 +33,7 @@ function getAllContacts($con) {
                     <td>$subject</td>
                     <td>$message</td>
                     <td>$date</td>
+                    <td>$delete</td>
                 </tr>";
     }
     $html .= "</tbody>

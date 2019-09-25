@@ -7,10 +7,12 @@ require_once("include/afterNav.php");
     <h3>Contact Us</h3>
     <form action="contact.php" method="POST">
         <div class="form-group">
-            <input class="form-control" type="text" name="name" placeholder="Enter Your Name" required value="<?php echo $userLoggedInObj->getName()?>">
+            <input class="form-control" type="text" name="name" placeholder="Enter Your Name" required <?php $readonly = User::isLoggedIn() ? 'readonly' : ''; echo $readonly; ?> value="<?php $name = User::isLoggedIn() ? $userLoggedInObj->getName() : "";
+            echo $name;?>">
         </div>
         <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Enter Your Email" required value="<?php echo $userLoggedInObj->getEmail()?>">
+            <input class="form-control" type="email" name="email" placeholder="Enter Your Email" required value="<?php $email = User::isLoggedIn() ?  $userLoggedInObj->getEmail() : "" ;
+            echo $email;?>">
         </div>
         <div class="form-group">
             <input class="form-control" type="text" name="subject" placeholder="Subject" required value="">

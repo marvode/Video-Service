@@ -22,7 +22,7 @@ if(User::isLoggedIn()){
 <html lang="en" dir="ltr">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>eVISION360</title>
+        <title>EVISION360</title>
         <link rel="stylesheet" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/css/style.css">
         <link rel="stylesheet" href="assets/css/button.css">
@@ -32,11 +32,12 @@ if(User::isLoggedIn()){
         <script src="assets/js/bootstrap.min.js" charset="utf-8"></script>
         <script src="assets/js/main.js"></script>
         <script src="assets/js/userAction.js" charset="utf-8"></script>
+        <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5d8b73277b26a8001242976b&product=inline-share-buttons" async="async"></script>
         <style media="screen">
-        @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Satisfy&display=swap');
 
         .navbar-brand {
-            font-family: 'Lobster', cursive;
+            font-family: 'Satisfy', cursive;
         }
         hr {
         		width: 95%;
@@ -50,7 +51,7 @@ if(User::isLoggedIn()){
         <nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top mb-2" role="navigation" style="border-bottom:1px solid rgba(0,0,0,0.2)">
             <div class="container-fluid d-flex">
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> ☰
-                </button> <a class="navbar-brand" href="index.php">eVISION360</a>
+                </button> <a class="navbar-brand" href="index.php">EVISION360</a>
 
                 <div class="collapse navbar-collapse col-lg-10 justify-content-end" id="bs-example-navbar-collapse-1">
                     <form action="search.php" method="GET" class="form-inline mr-auto ml-auto" role="search">

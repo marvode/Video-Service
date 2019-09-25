@@ -121,6 +121,10 @@ class ButtonProvider {
         return ButtonProvider::createButton("Upgrade", null, "upgrade(\"$usernameLoggedIn\", this)", "btn btn-primary");
     }
 
+    public static function createDeleteAudioButton($con, $audioId) {
+        return ButtonProvider::createButton("Delete", null, "deleteAudio(\"$audioId\", this)", "btn btn-danger");
+    }
+
     public static function createSetSubscriptionButton($usernameLoggedIn) {
         return ButtonProvider::createButton("Set", null, "setSubscription(\"$usernameLoggedIn\", this)", "btn btn-success");
     }

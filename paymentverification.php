@@ -63,7 +63,14 @@ function failureResponse($usernameLoggedIn) {
                 </div>
             </div>";
 }
-echo successResponse($usernameLoggedIn);
+
+if(($_GET["status"] == "successful")) {
+    echo successResponse($usernameLoggedIn);
+}
+else {
+    echo failureResponse($usernameLoggedIn);
+}
+
 ?>
 
 <?php require_once("include/footer.php"); ?>

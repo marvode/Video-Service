@@ -29,6 +29,8 @@ class VideoInfoSection {
                     <div class=''>
                         $controls
                     </div>
+                    <div class='sharethis-inline-share-buttons'></div>
+
                 </div>";
     }
 

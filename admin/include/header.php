@@ -24,6 +24,9 @@ $userLoggedInObj = new User($con, $usernameLoggedIn);
         <script src="assets/js/popper.js" charset="utf-8"></script>
         <script src="assets/js/bootstrap.min.js" charset="utf-8"></script>
         <script src="assets/js/main.js"></script>
+
+        <script src="assets/js/adminActions.js"></script>
+
         <style media="screen">
         @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
 
@@ -58,7 +61,9 @@ $userLoggedInObj = new User($con, $usernameLoggedIn);
                     <ul class="nav navbar-nav">
                         <li class="nav-item"><?php if(User::isLoggedIn()) echo ButtonProvider::createApproveRequest();?></li>
                         <li class="nav-item"><?php if(User::isLoggedIn()) echo ButtonProvider::createSetFeatureVideo();?></li>
+                        <li class="nav-item"><?php if(User::isLoggedIn()) echo ButtonProvider::createHyperlinkButton("Audio", null, "audio.php", "nav-link");?></li>
                         <li class="nav-item"><?php if(User::isLoggedIn()) echo ButtonProvider::createHyperlinkButton("Messages", null, "contact.php", "nav-link");?></li>
+
                         <li class="nav-item"><?php echo ButtonProvider::createLogOutButton() ?></li>
                         <li class="nav-item"><?php if(User::isLoggedIn()) {
                             $balance = $userLoggedInObj->getBalance();

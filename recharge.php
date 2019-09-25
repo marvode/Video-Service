@@ -20,7 +20,7 @@ require_once("include/afterNav.php");
                     <div class="form-group">
                         <input class='form-control' id='amount' type="text" name="" value="" placeholder="Amount in USD (eg. 5)">
                     </div>
-                    <script type="text/javascript" src="https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+                    <script type="text/javascript" src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
                     <button class='btn btn-success' style="border-radius: 0px" type="button" id='submit' onclick="payWithRave()">Pay Now</button>
                 </form>
             </div>
@@ -32,7 +32,7 @@ require_once("include/afterNav.php");
 
 <script>
     function payWithRave() {
-        const API_publicKey = "FLWPUBK-887be135b073a9171aae5e6d50ce1ccc-X";
+        const API_publicKey = "FLWPUBK-99302aeac657078ec0d9917f81a16893-X";
         const email = document.querySelector('#email').value;
         const phone = document.querySelector('#phone').value;
         const rechargeAmount = parseFloat(document.getElementById('amount').value);
@@ -52,16 +52,19 @@ require_once("include/afterNav.php");
             onclose: function() {},
             callback: function(response) {
                 var txref = response.tx.txRef; // collect txRef returned and pass to a 					server page to complete status check.
+                var status = response.data.data.status;
                 console.log("This is the response returned after a charge", response);
+                var address = "http://evision360.com/"
                 if (
                     response.tx.chargeResponseCode == "00" ||
                     response.tx.chargeResponseCode == "0"
                 ) {
                     // redirect to a success page.
-                    window.location = "http://localhost/video_service/paymentverification.php?txref=" + txref;
+                    let user = "<?php echo $usernameLoggedIn; ?>";
+                    topup(user, rechargeAmount);
                 } else {
                     // redirect to a failure page.
-                    window.location = "http://localhost/video_service/paymentverification.php?txref=" + txref;
+                    window.location = address + "paymentverification.php?status=" + status;
                 }
 
                 x.close(); // use this to close the modal immediately after payment.
