@@ -53,10 +53,10 @@ if(User::isLoggedIn()){
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> ☰
                 </button> <a class="navbar-brand" href="index.php">EVISION360</a>
 
-                <div class="collapse navbar-collapse col-lg-10 justify-content-end" id="bs-example-navbar-collapse-1">
-                    <form action="search.php" method="GET" class="form-inline mr-auto ml-auto" role="search">
+                <div class="collapse navbar-collapse col-md-10 justify-content-end" id="bs-example-navbar-collapse-1">
+                    <form action="<?php if(preg_match('/\baudio.php\b/', $_SERVER['REQUEST_URI']) || preg_match('/\bsearchaudio.php\b/', $_SERVER['REQUEST_URI'])) { echo 'searchaudio.php';} else { echo 'search.php';} ?>" method="GET" class="form-inline mr-auto ml-auto" role="search">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="Search">
+                            <input type="text" class="form-control" name="search" placeholder="Search <?php if(preg_match('/\baudio.php\b/', $_SERVER['REQUEST_URI']) || preg_match('/\bsearchaudio.php\b/', $_SERVER['REQUEST_URI'])) { echo 'Audio';} else { echo 'Video'; } ?>">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-light bg-light" style="border-width: 0px;">
                                     <img src="assets/images/icons/search.png" alt="" width="22px">

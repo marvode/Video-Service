@@ -6,7 +6,7 @@
     ?>
 
     <div class="row">
-        <div class="col-lg-8 mb-4">
+        <div class="col-md-8 mb-4">
             <h3>Upload Video</h3>
             <hr>
             <?php
@@ -15,7 +15,7 @@
             ?>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <h3>Upload Music</h3>
             <hr>
             <?php

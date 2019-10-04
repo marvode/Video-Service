@@ -7,7 +7,7 @@ class SearchResultsProvider {
         $this->userLoggedInObj = $userLoggedInObj;
     }
 
-    public function getVideos($term, $orderBy) {
+    public function getVideos($term, $orderBy, $start_from, $record_per_page) {
         if($this->convertCategory($term)) {
             $term = $this->convertCategory($term);
 

@@ -45,7 +45,7 @@ require_once("include/afterNav.php");
 
 
 function successResponse($usernameLoggedIn) {
-    return "<div class='col-lg-6 offset-lg-3'>
+    return "<div class='col-md-6 offset-md-3'>
                 <div class='my-auto mx-auto'>
                     <img src='assets/images/success.png' alt='Payment Successful' style='max-height: 370px'>
                     <h5>Payment Successful</h5>
@@ -55,7 +55,7 @@ function successResponse($usernameLoggedIn) {
 }
 
 function failureResponse($usernameLoggedIn) {
-    return "<div class='col-lg-6 offset-lg-3'>
+    return "<div class='col-md-6 offset-md-3'>
                 <div class='my-auto mx-auto'>
                     <img src='assets/images/unsuccess.png' style='max-height: 370px' alt='Payment Unsuccessful'>
                     <h5>Payment Unsuccessful</h5>

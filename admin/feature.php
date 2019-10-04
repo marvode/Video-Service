@@ -5,10 +5,18 @@ require_once("include/classes/RequestApproval.php");?>
 
 <?php
 
-$videoGrid = new VideoGrid($con, $userLoggedInObj);
-echo "<div class='col-lg-12'>";
-echo $videoGrid->createFeatureSelect(null, "Set Feature Video", "");
-echo "</div>";
+echo "<div class='col-md-12' id='pagination_data'>";
 
+echo "</div>";
+?>
+<script type="text/javascript">
+    load_data();
+    $(document).on('click', '.pagination_link', function() {
+        var page = $(this).attr('id');
+        load_data(page);
+        $(this).addClass("active");
+    }) 
+</script>
+<?php
 require_once("include/footer.php")
 ?>

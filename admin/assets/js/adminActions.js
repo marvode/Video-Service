@@ -18,6 +18,19 @@ function deleteFile(videoId, button) {
     });
 }
 
+function load_data(page) {
+    $.ajax({
+        url: "ajax/pagination.php",
+        method: "POST",
+        data: {page: page},
+        success: function(data) {
+            $("#pagination_data").html(data);
+            var page_item = "#page-item-" + page;
+            $(page_item).addClass("active");
+        }
+    })
+}
+
 function deleteAudio(audioId, button) {
     $.post("ajax/delete.php", { audioId: audioId })
     .done(function() {

@@ -15,7 +15,7 @@ class VideoGridItem {
         $duration = $this->video->getDuration();
         $url = "watch.php?id=".$this->video->getId();
 
-        return "<div class='col-lg-4'>
+        return "<div class='col-md-4'>
                     <a class='text-light' href='$url' style='text-decoration:none;'>
                     <div class='thumbnail'>$thumbnail</div>
                     <div class='p-1 mousehover'>$details</div>
@@ -29,7 +29,7 @@ class VideoGridItem {
         $duration = $this->video->getDuration();
         $url = "watch.php?id=".$this->video->getId();
 
-        return "<div class='col-lg-3 mt-3'>
+        return "<div class='col-md-3 mt-3'>
                     <a class='text-light' href='$url' style='text-decoration:none;'>
                     <div class='thumbnail'>$thumbnail</div>
                     <div class='p-1 mousehover'>$details</div>
@@ -45,7 +45,7 @@ class VideoGridItem {
         $deleteButton = ButtonProvider::createDeleteButton($this->con, $videoId);
         $featureButton = ButtonProvider::createFeatureButton($this->con, $videoId);
 
-        return "<div class='col-lg-3 mt-3'>
+        return "<div class='col-md-3 mt-3'>
                     <a class='text-light' href='watch.php?id= . $videoId' style='text-decoration:none;'>
                     <div class=''>$thumbnail</div>
                     <div class='p-1 mousehover'>

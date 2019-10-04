@@ -2,7 +2,7 @@
 require_once("include/header.php");
 require_once("include/afterNav.php");
 ?>
-<div class="col-lg-8 offset-lg-2">
+<div class="col-md-8 offset-md-2">
     <p>Evision360 unlike the typical video on demand or video sharing website provides a unique platform for entertainment as well serve as a means of employment for video and audio content creators, publishers and full time filmmakers. Evision360 is a platform with a special interest in original and undiluted video and audio content. This website serves a dual purpose
         <ol>
             <li>as a video sharing website and</li>

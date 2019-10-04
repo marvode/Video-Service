@@ -27,6 +27,8 @@ class SubscriptionsProvider {
 
             $videoSql = "SELECT * FROM videos $condition AND contentType=1 ORDER BY uploadDate DESC";
             $videoQuery = $this->con->prepare($videoSql);
+            // $query->bindParam(":start_from", $start_from, PDO::PARAM_INT);
+            // $query->bindParam(":record_per_page", $record_per_page, PDO::PARAM_INT);
 
             $i = 1;
 

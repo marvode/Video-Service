@@ -9,6 +9,7 @@ if(!isset($_POST["uploadButton"])) {
     exit();
 }
 
+$contentInput = $userLoggedInObj->isPremium() ? $_POST["contentInput"] : 0;
 // create file upload data
 $videoUploadData = new VideoUploadData(
                             $_FILES["fileInput"],
@@ -17,7 +18,7 @@ $videoUploadData = new VideoUploadData(
                             $_POST["categoryInput"],
                             $userLoggedInObj->getUsername(),
                             $_POST["languageInput"],
-                            $_POST["contentInput"]
+                            $contentInput
                         );
 
 // Process video data (upload)

@@ -47,7 +47,7 @@ $userLoggedInObj = new User($con, $usernameLoggedIn);
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> ☰
                 </button> <a class="navbar-brand" href="index.php">eVISION360</a>
 
-                <div class="collapse navbar-collapse col-lg-10 justify-content-end" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse col-md-10 justify-content-end" id="bs-example-navbar-collapse-1">
                     <form class="form-inline mr-auto ml-auto" role="search">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search">

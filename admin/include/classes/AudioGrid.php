@@ -22,7 +22,7 @@ class AudioGrid {
 
         //returns the main container in the homepage
         return "<h5>$header</h5>
-                <div class='col-lg-12'>
+                <div class='col-md-12'>
                     <div class='container-fluid'>
                         <div class='row'>
                             $gridItems

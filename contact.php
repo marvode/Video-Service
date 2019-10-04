@@ -3,7 +3,7 @@ require_once("include/header.php");
 require_once("include/afterNav.php");
 ?>
 
-<div class="col-lg-6 offset-lg-3">
+<div class="col-md-6 offset-md-3">
     <h3>Contact Us</h3>
     <form action="contact.php" method="POST">
         <div class="form-group">

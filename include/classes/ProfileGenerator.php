@@ -12,7 +12,7 @@ class ProfileGenerator {
 
     }
 
-    public function create() {
+    public function create($start_from, $record_per_page) {
         $profileUsername = $this->profileData->getProfileUsername();
 
         if(!$this->profileData->userExists()) {
@@ -21,7 +21,7 @@ class ProfileGenerator {
 
         $headerSection = $this->createHeaderSection();
         $tabsSection = $this->createTabsSection();
-        $contentSection = $this->createContentSection();
+        $contentSection = $this->createContentSection($start_from, $record_per_page);
 
         return "<div class='text-light'>
                     $headerSection
@@ -52,7 +52,7 @@ class ProfileGenerator {
                     $upgrade
                 </div>
                 <div class='row'>
-                    <div class='offset-lg-4 col-lg-4'>
+                    <div class='offset-md-4 col-md-4'>
                         <div class='d-flex justify-content-center'>
                             <div class=''><img class='img-fluid ' src='$profileImage' style='max-height: 300px'></div>
                         </div>
@@ -61,7 +61,7 @@ class ProfileGenerator {
                         <h4 class=''>$name</h4>
                         $subCount subscribers
                     </div>-->
-                    <div class='col-lg-4 '>
+                    <div class='col-md-4 '>
                         $requestTab
                     </div>
                 </div>
@@ -87,7 +87,7 @@ class ProfileGenerator {
             $requestWithdrawal = $this->requestWithdrawal();
 
             $others = "<form method='POST' action='request1.php'>
-                            <div class='form-group '><input type='text' class='form-control' name='amount' placeholder='Amount in USD (eg. 20)'></div>
+                            <div class='form-group '><input type='number' class='form-control' name='amount' placeholder='Amount in USD (eg. 20)'></div>
                             <div class='form-group '><input type='text' class='form-control' name='paymentMedium' placeholder='Enter Payment Gateway'></div>
                             <div class='form-group '><input type='text' class='form-control' name='paymentId' placeholder='User ID'></div>
                             <div class='form-group d-flex justify-content-end'><button type='submit' name='submit' class='btn btn-secondary'>Submit</button></div>
@@ -128,18 +128,23 @@ class ProfileGenerator {
                 </ul>";
     }
 
-    public function createContentSection() {
+    public function createContentSection($start_from, $record_per_page) {
         $videos = $this->profileData->getUsersVideos();
 
         if(sizeof($videos) > 0) {
             if($this->userLoggedInObj->isSubscribedTo($this->profileUsername)) {
                 $videoGrid = new VideoGrid($this->con, $this->userLoggedInObj);
                 //$videoGridHtml = $videoGrid->create($videos, null, false, 0);
-                $videoGridHtml = $videoGrid->create($videos, "Content", false, 1, $this->profileUsername);
+                $videoGridHtml = $videoGrid->create($videos, "", false, 1, $this->profileUsername, $start_from, $record_per_page);
+            }
+            elseif ($this->userLoggedInObj->getUsername() == $this->profileUsername) {
+                $videoGrid = new VideoGrid($this->con, $this->userLoggedInObj);
+                //$videoGridHtml = $videoGrid->create($videos, null, false, 0);
+                $videoGridHtml = $videoGrid->create($videos, "", false, 1, $this->profileUsername, $start_from, $record_per_page);
             }
             else {
                 $videoGrid = new VideoGrid($this->con, $this->userLoggedInObj);
-                $videoGridHtml = $videoGrid->create($videos, "Trailers", false, 0, "");
+                $videoGridHtml = $videoGrid->create($videos, "", false, 0, $this->profileUsername, $start_from, $record_per_page);
             }
         }
         else {
@@ -165,7 +170,7 @@ class ProfileGenerator {
                 $button = ButtonProvider::createSetSubscriptionButton($this->userLoggedInObj->getUsername());
                 return "<div class='form-inline'>
                             <div class='input-group'>
-                                <input type='text' class='form-control' id='subscriptionAmount' placeholder='Set Subscription Cost'>
+                                <input type='number' class='form-control' id='subscriptionAmount' placeholder='Set Subscription Cost'>
                                 <div class='input-group-append'>
                                     $button
                                 </div>
@@ -180,7 +185,7 @@ class ProfileGenerator {
                             </div>
                             <div class='form-inline'>
                                 <div class='input-group'>
-                                    <input type='text' class='form-control' id='subscriptionAmount' placeholder='Change Subscription Cost'>
+                                    <input type='number' class='form-control' id='subscriptionAmount' placeholder='Change Subscription Cost'>
                                     <div class='input-group-append'>
                                         $button
                                     </div>
@@ -192,7 +197,7 @@ class ProfileGenerator {
         else {
             $button = ButtonProvider::upgradeButton($this->userLoggedInObj->getUsername());
 
-            $upgrade = "<div class='col-lg-3'>
+            $upgrade = "<div class='col-md-3'>
                             <p>Upgrade to Premium membership plan and get paid per subscription to your channel</p>
                             $button
                         </div>";
@@ -203,7 +208,7 @@ class ProfileGenerator {
     private function requestWithdrawal() {
 
             return "<form method='POST' action='request.php'>
-                        <div class='form-group '><input type='text' class='form-control' name='amount' placeholder='Amount in USD (eg. 20)'></div>
+                        <div class='form-group '><input type='number' class='form-control' name='amount' placeholder='Amount in USD (eg. 20)'></div>
                         <div class='form-group '><input type='text' class='form-control' name='accountName' placeholder='Your Account Name'></div>
                         <div class='form-group '><input type='text' class='form-control' name='accountNo' placeholder='Your Account Number'></div>
                         <div class='form-group '><input type='text' class='form-control' name='bankName' placeholder='Your Bank Name'></div>

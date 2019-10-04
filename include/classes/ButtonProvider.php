@@ -1,5 +1,4 @@
 <?php
-require_once("include/config.php");
 class ButtonProvider {
     public static $signInFunction = "notSignedIn()";
 
@@ -127,6 +126,10 @@ class ButtonProvider {
 
     public static function createSetSubscriptionButton($usernameLoggedIn) {
         return ButtonProvider::createButton("Set", null, "setSubscription(\"$usernameLoggedIn\", this)", "btn btn-success");
+    }
+
+    public static function createPaginationButton($linkId) {
+        return "<li class='page-item' id='page-item-$linkId'><a class='page-link pagination_link' style='background-color:#fc7b03;' id='$linkId'>$linkId</a></li>";
     }
 }
 ?>

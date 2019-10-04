@@ -12,7 +12,7 @@ if(!isset($_GET["id"])) {
 ?>
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-md-8">
         <?php
         $videoId = $_GET["id"];
         $video = new Video($con, $videoId, $userLoggedInObj);
@@ -72,7 +72,7 @@ if(!isset($_GET["id"])) {
         ?>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-md-4">
         <?php
         $videoGrid = new VideoGrid($con, $userLoggedInObj);
         echo $videoGrid->createSuggestions(null, "Suggested Videos", false);

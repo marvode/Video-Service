@@ -101,9 +101,7 @@ h6 {
 
     <div class="container-fluid">
         <?php
-        $attraction = new VideoGrid($con, $userLoggedInObj->getUsername());
         $videoGrid = new VideoGrid($con, $userLoggedInObj->getUsername());
-        $videoGrid2 = new VideoGrid($con, $userLoggedInObj->getUsername());
         ?>
 
 
@@ -114,20 +112,20 @@ h6 {
             </div>
             <div class="row mt-3">
                 <?php
-                echo "<div class='col-lg-2 pr-3'>";
+                echo "<div class='col-md-2 pr-3'>";
                 echo $videoGrid->contentCategory();
                 echo "</div>
-                      <div class='col-lg-10' style='padding:0px;'>";
-                echo $attraction->createAttraction(null, "Latest", false);
+                      <div class='col-md-10' style='padding:0px;'>";
+                echo $videoGrid->createAttraction(null, "Latest", false);
                 echo "</div>"
                 ?>
             </div>
         </div>
         <?php
         require_once("include/afterNav.php");
-        echo $videoGrid->create(null, "Watch Amazing Videos", false, 0, "");
+        echo $videoGrid->create(null, "Watch Amazing Videos", false, 0, "", 0, 6);
         echo "<br>";
-        echo $videoGrid2->createLatest(null, "Latest Release", false, 0);
+        echo $videoGrid->createLatest(null, "Latest Release", false, 0);
         echo "<br>";
         ?>
 

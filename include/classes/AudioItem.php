@@ -13,7 +13,7 @@ class AudioItem {
         $audioPath = $this->audio->getFilePath();
         $title = $this->audio->getTitle();
 
-        return "<div style='border: 1px solid black; border-radius: 1.5em;' class='col-lg-6 offset-lg-3 p-4'>
+        return "<div style='border: 1px solid black; border-radius: 1.5em;' class='col-md-6 offset-md-3 p-4 mb-3'>
                     <h3><em>Title:</em> $title</h3>
                     <div class='thumbnail'>$thumbnail</div>
                     <div class='p-1'>$details</div>

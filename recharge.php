@@ -4,7 +4,7 @@ require_once("include/afterNav.php");
 ?>
 
 <div class="container">
-    <div class="offset-lg-3 col-lg-6">
+    <div class="offset-md-3 col-md-6">
         <div class="card text-dark">
             <div class="card-header">
                 <h3>Recharge Now</h3>

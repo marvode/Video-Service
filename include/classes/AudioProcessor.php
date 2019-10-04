@@ -36,7 +36,7 @@ class AudioProcessor {
                 $finalPicPath = str_replace(" ", "_", $finalPicPath);
 
                 if(!$this->insertAudioData($audioUploadData, $finalFilePath, $finalPicPath)) {
-                    echo "Insert query failed";
+                    echo "Upload failed";
                     return false;
                 }
             }
@@ -82,7 +82,6 @@ class AudioProcessor {
     }
 
     private function insertAudioData($uploadData, $filePath, $picPath) {
-        echo $uploadData->genre;
         $query = $this->con->prepare("INSERT INTO audio(title, uploadedBy, description, genre, filePath, language, picPath)
                                         VALUES(:title, :uploadedBy, :description, :genre, :filePath, :language, :picPath)");
 

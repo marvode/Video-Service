@@ -7,34 +7,39 @@ class AudioGrid {
         $this->userLoggedInObj = $userLoggedInObj;
     }
 
-    public function create($videos, $title, $showFilter) {
-        if($videos == null) {
-            $gridItems = $this->generateItems();
-        }
-        else {
-            $gridItems = $this->generateItemsFromVideos($videos);
-        }
-        $header = "";
+    public function create($audio, $title, $start_from, $record_per_page) {
+        $gridItems = $this->generateItems($start_from, $record_per_page);
 
-        if($title != null) {
-            $header = $this->createGridHeader($title, $showFilter);
-        }
+        $query = $this->con->prepare("SELECT * FROM audio");
+        $query->execute();
+        $total_records = $query->rowCount();
+        $total_pages = ceil($total_records/$record_per_page);
 
+        $elementsHtml = "<div class='row d-flex justify-content-center pt-5'><ul class='pagination'>";
+        if($total_pages > 1) {
+            for($i = 1; $i <= $total_pages; $i++) {
+                $elementsHtml .= ButtonProvider::createPaginationButton($i);
+            }
+        }
+        $elementsHtml .= "</ul></div>";
         //returns the main container in the homepage
-        return "<h5>$header</h5>
-                <div class='col-lg-12'>
+        return "<h5>$title</h5>
+                <div class='col-md-12'>
                     <div class='container-fluid'>
                         <div class='row'>
                             $gridItems
                         </div>
+                        $elementsHtml
                     </div>
                 </div>
 
                 <hr>";
     }
 
-    public function generateItems() {
-        $query = $this->con->prepare("SELECT * FROM audio ORDER BY id DESC LIMIT 10");
+    public function generateItems($start_from, $record_per_page) {
+        $query = $this->con->prepare("SELECT * FROM audio ORDER BY id DESC LIMIT :start_from, :record_per_page");
+        $query->bindParam(":start_from", $start_from, PDO::PARAM_INT);
+        $query->bindParam(":record_per_page", $record_per_page, PDO::PARAM_INT);
         $query->execute();
 
         $elementsHtml = "";
@@ -47,36 +52,37 @@ class AudioGrid {
         return $elementsHtml;
     }
 
-    public function createGridHeader($title, $showFilter) {
-        $filter = "";
+    public function generateItemsFromAudio($audio, $title, $start_from, $record_per_page) {
+        $total_records = count($audio);
 
-        if($showFilter) {
-            $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $total_pages = ceil($total_records/$record_per_page);
 
-            $urlArray = parse_url($link);
-            $query = $urlArray["query"];
+        $elementsHtml = "<div class='row d-flex justify-content-center pt-5'><ul class='pagination'>";
+        if($total_pages > 1) {
+            for($i = 1; $i <= $total_pages; $i++) {
+                $elementsHtml .= ButtonProvider::createPaginationButton($i);
+            }
+        }
+        $elementsHtml .= "</ul></div>";
 
-            parse_str($query, $params);
+        $gridItem = "";
 
-            unset($params["orderBy"]);
-
-            $newQuery = http_build_query($params);
-
-            $newUrl = basename($_SERVER["PHP_SELF"]) . "?" . $newQuery;
-
-            $filter = "<div class='right'>
-                            <span>Ordey by:</span>
-                            <a href='$newUrl&orderBy=uploadDate'>Upload date</a>
-                            <a href='$newUrl&orderBy=views'>Most viewed</a>
-                        </div>";
+        for ($i=$start_from; $i < ($start_from + $record_per_page) && $i < count($audio); $i++) {
+            $item = new AudioItem($audio[$i]);
+            $gridItem .= $item->create();
         }
 
-        return "<div class=''>
-                    <div class='text-light'>
-                        $title
+        return "<h4>$title</h4><hr>
+                <div class='col-md-12'>
+                    <div class='container-fluid'>
+                        <div class=''>
+                            $gridItem
+                        </div>
+                        $elementsHtml
                     </div>
-                    $filter
-                </div>";
+                </div>
+
+                <hr>";
     }
 }
 ?>
