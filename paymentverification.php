@@ -8,7 +8,7 @@ require_once("include/afterNav.php");
 //     $currency = "USD";
 //
 //     $query = array(
-//         "SECKEY" => "FLWSECK-bf533a3c64be74c5bab3fb69cccf51bd-X",
+//         "SECKEY" => "",
 //         "txref" => $ref
 //     );
 //     $data_string = json_encode($query);
