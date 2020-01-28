@@ -5,6 +5,7 @@ function approve(requestId, button) {
 
         var buttonText = $(button).hasClass("btn-success") ? "APPROVE" : "APPROVED";
         $(button).text(buttonText);
+        window.location.reload();
     });
 }
 
@@ -15,6 +16,7 @@ function deleteFile(videoId, button) {
 
         var buttonText = $(button).hasClass("btn-danger") ? "DELETE" : "DELETED";
         $(button).text(buttonText);
+        window.location.reload();
     });
 }
 
@@ -38,6 +40,7 @@ function deleteAudio(audioId, button) {
 
         var buttonText = $(button).hasClass("btn-danger") ? "DELETE" : "DELETED";
         $(button).text(buttonText);
+        window.location.reload();
     });
 }
 
@@ -48,6 +51,7 @@ function deleteMessage(messageId, button) {
 
         var buttonText = $(button).hasClass("btn-danger") ? "DELETE" : "DELETED";
         $(button).text(buttonText);
+        window.location.reload();
     });
 }
 
@@ -59,5 +63,6 @@ function makeFeature(videoId, button) {
         var buttonText = $(button).hasClass("btn-info") ? "Make Feature" : "FEATURED";
 
         $(button).text(buttonText + " " + count);
+        window.location.reload();
     });
 }

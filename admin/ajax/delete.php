@@ -8,7 +8,7 @@ if(isset($_POST['videoId'])) {
     if(delete($con, $videoId)) {
         deleteThumbnail($con, $videoId);
         deleteVideo($con, $videoId);
-
+        header("Refresh:0");
     }
 }
 
@@ -77,7 +77,6 @@ function delete($con, $videoId) {
     $filePath = "../" . getFilePath($con, $videoId);
     if(!unlink($filePath)) {
         echo "Could not delete file\n";
-        return false;
     }
 
     return true;

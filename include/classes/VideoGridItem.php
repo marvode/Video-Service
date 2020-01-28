@@ -15,7 +15,7 @@ class VideoGridItem {
         $url = "watch.php?id=".$this->video->getId();
 
         return "<div class='col-md-4'>
-                    <a class='text-light' href='$url' style='text-decoration:none;'>
+                    <a class='' href='$url' style='text-decoration:none;'>
                     <div class='thumbnail'>$thumbnail</div>
                     <div class='p-1 mousehover'>$details</div>
                     </a>
@@ -29,7 +29,7 @@ class VideoGridItem {
         $url = "watch.php?id=".$this->video->getId();
 
         return "<div class='col-md-3 mt-3'>
-                    <a class='text-light' href='$url' style='text-decoration:none;'>
+                    <a class='' href='$url' style='text-decoration:none;'>
                     <div class='thumbnail'>$thumbnail</div>
                     <div class='p-1 mousehover'>$details</div>
                     </a>
@@ -43,7 +43,7 @@ class VideoGridItem {
         $url = "watch.php?id=".$this->video->getId();
 
         return "<div class='col mt-3'>
-                    <a class='text-light' href='$url' style='text-decoration:none;'>
+                    <a class='' href='$url' style='text-decoration:none;'>
                     <div class=''>$thumbnail</div>
                     <div class='p-1 mousehover'>$details</div>
                     </a>
@@ -57,13 +57,13 @@ class VideoGridItem {
         $url = "watch.php?id=".$this->video->getId();
 
         return "<div class='row'>
-                    <a class='text-light col-md-8' href='$url' style='text-decoration:none; padding:0px;'>
+                    <a class=' col-md-8' href='$url' style='text-decoration:none; padding:0px;'>
                     <div class='img-hover-zoom'>$thumbnail</div>
                     </a>
-                    <div class='col-md-4 bg-dark text-light d-flex' style='padding:0px;text-align:center;'>
+                    <div class='col-md-4 bg-dark  d-flex' style='padding:0px;text-align:center;'>
                         <div class='my-auto mx-auto'>
                             <h3 class='pb-5'>$title</h3>
-                            <a id='attractionBtn' class='btn btn-info btn-lg mb-2' href='$url'>WATCH NOW</a>
+                            <a id='attractionBtn' class='btn btn-warning btn-lg mb-2' href='$url'>WATCH NOW</a>
                         </div>
 
                     </div>
@@ -74,7 +74,7 @@ class VideoGridItem {
         $thumbnail = $this->video->getThumbnail();
 
 
-        return "<img class='col-sm-12' src='$thumbnail' width:'100%'>";
+        return "<img class='col-sm-12' src='$thumbnail'>";
     }
 
     private function createDetails($homepage) {
@@ -85,8 +85,8 @@ class VideoGridItem {
         $timestamp = $this->video->getTimeStamp();
 
         if($homepage == false) {
-            return "<div class='pr-1 pl-1'>
-                        <h6 class=''>$title</h6>
+            return "<div class='pr-1 pl-1 text-dark'>
+                        <h6 class='text-dark'>$title</h6>
                         <div class=''>
                             <span class=''>$username</span>
                             <span class='d-flex justify-content-end'>$views views</span>

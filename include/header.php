@@ -22,14 +22,14 @@ if(User::isLoggedIn()){
 <html lang="en" dir="ltr">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>EVISION360</title>
+        <title>Video Service</title>
         <link rel="stylesheet" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/css/style.css">
         <link rel="stylesheet" href="assets/css/button.css">
 
         <script src="assets/js/jquery.js" charset="utf-8"></script>
         <script src="assets/js/popper.js" charset="utf-8"></script>
-        <script src="assets/js/bootstrap.min.js" charset="utf-8"></script>
+        <script src="assets/js/bootstrap-material-design.min.js" charset="utf-8"></script>
         <script src="assets/js/main.js"></script>
         <script src="assets/js/userAction.js" charset="utf-8"></script>
         <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5d8b73277b26a8001242976b&product=inline-share-buttons" async="async"></script>
@@ -47,11 +47,11 @@ if(User::isLoggedIn()){
         }
         </style>
     </head>
-    <body style="background-color:#fc7b03;">
-        <nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top mb-2" role="navigation" style="border-bottom:1px solid rgba(0,0,0,0.2)">
+    <body>
+        <nav class="navbar navbar-light navbar-expand-lg mb-2" role="navigation" style="border-bottom:1px solid rgba(0,0,0,0.2)">
             <div class="container-fluid d-flex">
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> ☰
-                </button> <a class="navbar-brand" href="index.php">EVISION360</a>
+                </button> <a class="navbar-brand" href="index.php">Video Service</a>
 
                 <div class="collapse navbar-collapse col-md-10 justify-content-end" id="bs-example-navbar-collapse-1">
                     <form action="<?php if(preg_match('/\baudio.php\b/', $_SERVER['REQUEST_URI']) || preg_match('/\bsearchaudio.php\b/', $_SERVER['REQUEST_URI'])) { echo 'searchaudio.php';} else { echo 'search.php';} ?>" method="GET" class="form-inline mr-auto ml-auto" role="search">
@@ -65,7 +65,6 @@ if(User::isLoggedIn()){
                         </div>
                     </form>
                     <ul class="nav navbar-nav">
-                        <li class="nav-item"><a href='#' class='nav-link disabled' style:'padding-right: 1em; padding-left: 1em'><span style="color: red;">Live Stream<sup>coming soon</sup></span></a></li>
                         <li class="nav-item"><?php echo ButtonProvider::createUserUploadButton() ?></li>
                         <li class="nav-item"><a class="nav-link" href="audio.php">Audio</a></li>
                         <li class="nav-item"><?php echo ButtonProvider::createSubscriptionsButton() ?></li>

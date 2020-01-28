@@ -1,27 +1,7 @@
 <?php
 require_once('include/header.php');
 ?>
-<!-- <script type="text/javascript">
-    function truncateText(selector, maxLength) {
-        var element = document.querySelector(selector),
-            truncated = element.innerText;
 
-        if (truncated.length > maxLength) {
-            truncated = truncated.substr(0,maxLength) + '...';
-        }
-        return truncated;
-    }
-    $('h6').text() = truncateText('h6', 20);
-</script> -->
-<!-- <style media="screen">
-h6 {
- width: 190px;
- white-space: nowrap;
- overflow: hidden;
- text-overflow: ellipsis;
-}
-
-</style> -->
 <style media="screen">
 .image-container {
   position: relative;
@@ -54,17 +34,6 @@ h6 {
 
 .image-container:hover .middle {
   opacity: 1;
-}
-
-.text {
-  background-color: #32a0a8;
-  color: white;
-  font-size: 16px;
-  padding: 16px 32px;
-}
-.mousehover:hover {
-
-    color: #14decd;
 }
 
 /* [1] The container */
@@ -108,23 +77,33 @@ h6 {
 
         <div class="container-fluid">
             <div class="row">
-                <h3 class='text-light'>View by categories</h4>
+                <h3>View by categories</h4>
             </div>
             <div class="row mt-3">
                 <?php
                 echo "<div class='col-md-2 pr-3'>";
                 echo $videoGrid->contentCategory();
-                echo "</div>
-                      <div class='col-md-10' style='padding:0px;'>";
+                echo "</div>";
+
+                echo "<div class='col-md-10' id='attraction' style='padding:0px;'>";
                 echo $videoGrid->createAttraction(null, "Latest", false);
                 echo "</div>"
                 ?>
+                <script type="text/javascript">
+                    document.querySelector('.img-hover-zoom').querySelector('img').style.height = '';
+                </script>
             </div>
         </div>
         <?php
         require_once("include/afterNav.php");
+        ?>
+     
+        <?php
         echo $videoGrid->create(null, "Watch Amazing Videos", false, 0, "", 0, 6);
         echo "<br>";
+        ?>
+       
+        <?php
         echo $videoGrid->createLatest(null, "Latest Release", false, 0);
         echo "<br>";
         ?>

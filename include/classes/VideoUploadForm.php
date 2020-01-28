@@ -15,8 +15,10 @@ class VideoUploadForm {
         $uploadButton = $this->createUploadButton();
         $contentInput = $this->userLoggedInObj->isPremium() ? $this->createContentInput(null) : '';
         $languageInput = $this->createLanguageInput();
+        $thumbnailInput = $this->createThumbnailInput();
         return "<form action='processing.php' method='POST' enctype='multipart/form-data'>
                     $fileInput
+                    $thumbnailInput
                     $titleInput
                     $descriptionInput
                     $categoriesInput
@@ -104,6 +106,13 @@ class VideoUploadForm {
         if($value == null) $value = "";
         return "<div class='form-group'>
                     <textarea class='form-control' placeholder='Description' name='descriptionInput' rows='5' required>$value</textarea>
+                </div>";
+    }
+
+    private function createThumbnailInput() {
+        return "<div class='form-group'>
+                    <label>Upload Video Thumbnail</label>
+                    <input type='file' class='form-control-file' name='videoPicInput' required>
                 </div>";
     }
 

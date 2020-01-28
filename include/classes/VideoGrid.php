@@ -350,7 +350,7 @@ class VideoGrid {
         }
 
         return "<div class=''>
-                    <div class='text-light'>
+                    <div class=''>
                         $title
                     </div>
                     $filter
@@ -372,7 +372,7 @@ class VideoGrid {
 
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $row = $row['name'];
-            $categories .= "<a class='square_btn btn btn-red align-self-center text-light col-md-12' href='filter.php?category=$row' style='margin-bottom: 1px;'>$row</a>";
+            $categories .= "<a class='square_btn btn btn-red align-self-center  col-md-12' href='filter.php?category=$row' style='margin-bottom: 1px;'>$row</a>";
         }
         $categories .= "</div>";
         return $categories;
@@ -420,7 +420,7 @@ class VideoGrid {
 
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $row = $row['language'];
-            $categories .= "<a class='languageHover align-self-center text-light col-md-1 col-md-2' href='filter.php?language=$row&category=$category' style='text-decoration: none;'><h5> $row </h5></a>";
+            $categories .= "<a class='languageHover align-self-center  col-md-1 col-md-2' href='filter.php?language=$row&category=$category' style='text-decoration: none;'><h5> $row </h5></a>";
         }
         $categories .= "</div>";
         return $categories;

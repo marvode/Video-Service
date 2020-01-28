@@ -13,6 +13,7 @@ $contentInput = $userLoggedInObj->isPremium() ? $_POST["contentInput"] : 0;
 // create file upload data
 $videoUploadData = new VideoUploadData(
                             $_FILES["fileInput"],
+                            $_FILES["videoPicInput"],
                             $_POST["titleInput"],
                             $_POST["descriptionInput"],
                             $_POST["categoryInput"],

@@ -16,7 +16,12 @@ class VideoProcessor {
         $targetDir = "uploads/videos/";
         $videoData = $videoUploadData->videoDataArray;
 
-        $tempFilePath = $targetDir . basename($videoData["name"]);
+        $picTargetDir = "uploads/videos/thumbnails/";
+        $pic = $videoUploadData->videoPic;
+
+        $uniqid = uniqid();
+
+        $tempFilePath = $targetDir . $uniqid . basename($videoData["name"]);
         $tempFilePath = str_replace(" ", "_", $tempFilePath);
 
         $isValidData = $this->processData($videoData, $tempFilePath);
@@ -27,18 +32,27 @@ class VideoProcessor {
 
         if(move_uploaded_file($videoData["tmp_name"], $tempFilePath)) {
 
-            $finalFilePath = $targetDir . basename($videoData["name"]);
+            $finalFilePath = $targetDir . $uniqid . basename($videoData["name"]);
             $finalFilePath = str_replace(" ", "_", $finalFilePath);
 
-            if(!$this->insertVideoData($videoUploadData, $finalFilePath)) {
-                echo "Insert query failed";
-                return false;
-            }
+            $picPath = $picTargetDir . $uniqid . basename($pic["name"]);
+            $picPath = str_replace(" ", "_", $picPath);
 
-            if(!$this->generateThumbnails($finalFilePath)) {
-                echo "Upload failed - could not generate thumbnails\n";
-                return false;
+            if(move_uploaded_file($pic["tmp_name"], $picPath)) {
+
+                if(!$this->insertVideoData($videoUploadData, $finalFilePath)) {
+                    echo "Insert query failed";
+                    return false;
+                }
+                if(!$this->uploadThumbnail($picPath, $finalFilePath)) {
+                    echo "Couldn't upload thumbnail";
+                    return false;
+                }
             }
+            // if(!$this->generateThumbnails($finalFilePath)) {
+            //     echo "Upload failed - could not generate thumbnails\n";
+            //     return false;
+            // }
         }
         return true;
     }
@@ -90,14 +104,6 @@ class VideoProcessor {
         return $query->execute();
     }
 
-    private function deleteFile($filePath) {
-        if(!unlink($filePath)) {
-            echo "Could not delete file\n";
-            return false;
-        }
-        return true;
-    }
-
     public function generateThumbnails($filePath) {
         $thumbnailSize = "630x354";
         $numThumbnails = 1;
@@ -116,6 +122,7 @@ class VideoProcessor {
             $cmd = "$this->ffmpegPath -i $filePath -ss 00:00:01.000 -s $thumbnailSize -vframes 1 $fullThumbnailPath 2>&1";
 
             $outputLog = array();
+            // sleep(1);
             exec($cmd, $outputLog, $returnCode);
 
             if($returnCode != 0) {
@@ -139,6 +146,27 @@ class VideoProcessor {
             }
         }
 
+        return true;
+    }
+
+    private function uploadThumbnail($picPath, $filePath) {
+        $duration = $this->getVideoDuration($filePath);
+        $videoId = $this->con->lastInsertId();
+        $this->updateDuration($duration, $videoId);
+
+        $query = $this->con->prepare("INSERT INTO thumbnails(videoId, filePath, selected) VALUES(:videoId, :filePath, :selected)");
+        $query->bindParam(":videoId", $videoId);
+        $query->bindParam(":filePath", $picPath);
+        $query->bindParam(":selected", $selected);
+
+        $selected = 1;
+
+        $success = $query->execute();
+
+        if(!$success) {
+            echo "Error inserting thumbnail\n";
+            return false;
+        }
         return true;
     }
 

@@ -51,9 +51,9 @@ class VideoInfoSection {
                 $actionButton = ButtonProvider::createSubscriberButton($this->con, $userToObject, $this->userLoggedInObj);
             }
             return "<div class=''>
-                        <div class='text-light'>
+                        <div class=''>
                             $profileButton
-                            <a class='text-light' style='text-decoration: none;' href='profile.php?username=$uploadedBy'>
+                            <a class='text-dark' style='text-decoration: none;' href='profile.php?username=$uploadedBy'>
                                 $uploadedBy
                             </a>
                             <div class=''>
@@ -63,6 +63,9 @@ class VideoInfoSection {
                         </div>
                         <hr>
                         <div class=''>
+                            <div class='mb-3 bg-dark'>
+                                <script data-ad-client='ca-pub-7765634069811282' async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+                            </div>
                             <h5>Description</h5>
                             $description
                         </div>

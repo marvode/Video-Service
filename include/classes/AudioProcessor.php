@@ -14,7 +14,9 @@ class AudioProcessor {
         $audioData = $audioUploadData->audioDataArray;
         $pic = $audioUploadData->picDataArray;
 
-        $tempFilePath = $targetDir . basename($audioData["name"]);
+        $uniqid = uniqid();
+
+        $tempFilePath = $targetDir . $uniqid . basename($audioData["name"]);
         $tempFilePath = str_replace(" ", "_", $tempFilePath);
 
         $picPath = $picTargetDir . basename($pic["name"]);
@@ -28,11 +30,11 @@ class AudioProcessor {
 
         if(move_uploaded_file($audioData["tmp_name"], $tempFilePath)) {
 
-            $finalFilePath = $targetDir . basename($audioData["name"]);
+            $finalFilePath = $targetDir . $uniqid . basename($audioData["name"]);
             $finalFilePath = str_replace(" ", "_", $finalFilePath);
 
             if(move_uploaded_file($pic["tmp_name"], $picPath)) {
-                $finalPicPath = $picTargetDir . basename($pic["name"]);
+                $finalPicPath = $picTargetDir . $uniqid . basename($pic["name"]);
                 $finalPicPath = str_replace(" ", "_", $finalPicPath);
 
                 if(!$this->insertAudioData($audioUploadData, $finalFilePath, $finalPicPath)) {

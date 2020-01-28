@@ -29,7 +29,7 @@ function getInputValue($name) {
 <div class="row">
     <div class="offset-md-2 offset-md-3 mt-5"></div>
     <div class=" col-md-6 col-md-8">
-        <div class="card bg-dark">
+        <div class="card">
             <div class="card-header">
                 <h2>Sign In</h2>
             </div>

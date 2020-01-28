@@ -3,8 +3,9 @@ class VideoUploadData {
 
     public $videoDataArray, $title, $description, $category, $uploadedBy, $language, $content;
 
-    public function __construct($videoDataArray, $title, $description, $category, $uploadedBy, $language, $content) {
+    public function __construct($videoDataArray, $videoPic, $title, $description, $category, $uploadedBy, $language, $content) {
         $this->videoDataArray = $videoDataArray;
+        $this->videoPic = $videoPic;
         $this->title = $title;
         $this->description = $description;
         $this->category = $category;
