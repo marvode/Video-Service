@@ -32,7 +32,7 @@ require_once("include/afterNav.php");
 
 <script>
     function payWithRave() {
-        const API_publicKey = "FLWPUBK-99302aeac657078ec0d9917f81a16893-X";
+        const API_publicKey = "";
         const email = document.querySelector('#email').value;
         const phone = document.querySelector('#phone').value;
         const rechargeAmount = parseFloat(document.getElementById('amount').value);
